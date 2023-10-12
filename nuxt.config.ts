@@ -2,6 +2,20 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
   css: ['~/assets/css/main.css'],
+  modules: [
+    "@pinia/nuxt",
+  ],
+  nitro: {
+    minify: true
+  },
+  
+  imports: {
+    dirs: ['./stores'],
+  },
+  pages: true,
+  pinia: {
+    autoImports: ['defineStore', 'acceptHMRUpdate'],
+  },
   $production: {
     routeRules: {
       '/**': { isr: true }
@@ -16,16 +30,12 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
-
   app: {
     head: {
       title: 'Order Taobao',
       meta: [
         { name: 'description', content: 'Everything about - Nuxt-3' }
       ],
-      link: [
-        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Noto+Sans:wght@700&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,700&display=swap' }
-      ]
     }
   },
   runtimeConfig: {

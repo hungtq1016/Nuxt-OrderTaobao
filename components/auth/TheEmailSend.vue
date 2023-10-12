@@ -15,9 +15,9 @@
 
    </div>
    <div class="relative shrink-0 pt-4 space-y-3">
-       <NuxtLink to="/" class="flex items-center gap-x-2 justify-center text-sm text-gray-500 font-light hover:text-gray-900 duration-300 ease-in-out">
+       <NuxtLink to="/auth/login" class="flex items-center gap-x-2 justify-center text-sm text-gray-500 font-light hover:text-gray-900 duration-300 ease-in-out">
            <ArrowLongLeftIcon class="w-4 h-4"/>
-           <span>Trở về trang chủ</span>
+           <span>Trở về đăng nhập</span>
        </NuxtLink>
    </div>
 </template>
