@@ -45,7 +45,7 @@
             </div>
             <div v-if="passwordMsg" class="text-xs font-light text-red-600 mt-1">{{ passwordMsg }}</div>
         </div>
-        <button type="submit" @click="submit"
+        <button type="button" @click="submit"
             class="inline-flex justify-center rounded-lg text-sm font-semibold py-2.5 px-4 bg-slate-900 text-white hover:bg-slate-700 w-full">
             <span>Đăng Nhập</span>
         </button>

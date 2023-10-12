@@ -55,6 +55,8 @@ const LoginLogic = () => {
     const LoginAsync = async (req: LoginRequest, url: string): Promise<void> => {
         const { updateAuthAsync } = useAuthInfo();        
         if (!isValidate()) {
+            console.log('toggle');
+            
             const { data, error, pending } = await useFetch<AuthResponse>(url, {
                 method: "POST",
                 headers: {
