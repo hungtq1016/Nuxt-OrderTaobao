@@ -5,7 +5,11 @@
 
 @layer base {
     html {
-      font-family: "Ubuntu", system-ui, sans-serif;
+      font-family: "Open Sans", system-ui, sans-serif;
+    }
+
+    h3 {
+      font-family: "Noton Sans", system-ui, sans-serif;
     }
 }
 

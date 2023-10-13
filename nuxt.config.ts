@@ -4,6 +4,7 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css'],
   modules: [
     "@pinia/nuxt",
+    "@nuxtjs/google-fonts"
   ],
   nitro: {
     minify: true
@@ -23,6 +24,14 @@ export default defineNuxtConfig({
   },
   $development: {
     //
+  },
+  googleFonts: {
+    families: {
+      'Noto+Sans':{
+        wght: [700],
+      },
+      'Open+Sans':true,
+    }
   },
   postcss: {
     plugins: {

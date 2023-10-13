@@ -1,61 +1,22 @@
 import { LoginRequest, Authentication, AuthResponse } from '~/type';
+import AuthLogic from './auth.logic';
 
 const LoginLogic = () => {
     const login = ref<LoginRequest>({
         username: '',
         password: ''
     })
-
-    const usernameMsg = ref<string|null>(null)
-    const passwordMsg = ref<string|null>(null)
-    const usernameError = ref<boolean>(false)
-    const passwordError = ref<boolean>(false)
-    const input = ref<HTMLInputElement>()
-    const showPassword = ref<boolean>(false)
-
-    const validateUserName = (value:string):void=>{     
-                
-        if (value.length <= 1) {
-            usernameMsg.value = 'Tài khoản chưa hợp lệ';
-            usernameError.value = true
-        }else{
-            usernameMsg.value=null
-            usernameError.value = false
-        }  
-         
-    }
-
-    const validatePassword = (value:string):void=>{
-        const {passwordRegex} = useRegex();
-        if(passwordRegex.test(value)){
-            passwordMsg.value=null
-            passwordError.value = false
-        }else{
-            passwordMsg.value = 'Mật khẩu chưa hợp lệ';
-            passwordError.value = true
-        }
-    }
-
-    const toggleShowPassword = ():void =>{
-        if (showPassword.value != true) {
-            input.value?.setAttribute('type','text')
-            showPassword.value = !showPassword.value
-        }else{
-            input.value?.setAttribute('type','password')
-            showPassword.value = !showPassword.value
-        }
-    }
-
+    const {unameValidate,pwValidate,validatePassword,validateUserName} = AuthLogic()
+    
     const isValidate = () : boolean=>{
         validatePassword(login.value.password)
         validateUserName(login.value.username)
-        return passwordError.value == false && !usernameError.value == false
+        return !unameValidate.value.isError && !pwValidate.value.isError
     }
 
     const LoginAsync = async (req: LoginRequest, url: string): Promise<void> => {
         const { updateAuthAsync } = useAuthInfo();        
-        if (!isValidate()) {
-            console.log('toggle');
+        if (isValidate()) {
             
             const { data, error, pending } = await useFetch<AuthResponse>(url, {
                 method: "POST",
@@ -84,12 +45,7 @@ const LoginLogic = () => {
     
             }
         }
-        
-
-    }
-    
-
-    
-    return { login ,passwordError,LoginAsync,usernameMsg,passwordMsg,validateUserName,validatePassword,input,toggleShowPassword,usernameError}
+    }  
+    return {login,LoginAsync}
 }
 export default LoginLogic

@@ -8,6 +8,9 @@ export default {
     "./app.vue",
     "./error.vue",
   ],
-  plugins: [],
+  plugins: [
+
+  ],
+  
 }
 

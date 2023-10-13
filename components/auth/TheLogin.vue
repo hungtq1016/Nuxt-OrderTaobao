@@ -1,7 +1,7 @@
 // tạo ra một mẫu có thể được sử dụng để tạo ra một nhóm.
 <template>
     <h1 class="sr-only">Log in to your app account</h1>
-    <h3 class="text-3xl font-['Noto Sans'] font-bold">Đăng Nhập</h3>
+    <h3 class="text-3xl font-bold">Đăng Nhập</h3>
     <div class="w-full max-w-sm mt-6">
         <div class="mb-2">
             <button
@@ -30,20 +30,20 @@
             <label for="user" class="block text-sm font-semibold leading-6 text-gray-900">Tài Khoản</label>
             <input type="text" id="user" placeholder="Tài khoản" v-model="login.username" @change="validateUserName(login.username)"
                 class="mt-2 appearance-none text-slate-900 border bg-white rounded-md block w-full px-3 h-10 shadow-sm sm:text-sm focus:outline-none placeholder:text-slate-400 focus:ring-2 focus:ring-sky-500 ring-1 ring-slate-200"
-                :class="{'border border-red-600':usernameError}"/>
-                <div v-if="usernameMsg" class="text-xs font-light text-red-600 mt-1">{{ usernameMsg }}</div>
+                :class="{'border border-red-600':unameValidate.isError}"/>
+                <div v-if="unameValidate.isError" class="text-xs font-light text-red-600 mt-1">{{ unameValidate.message }}</div>
         </div>
         <div class="mb-6">
             <label for="password" class="text-sm font-semibold leading-6 text-gray-900 flex gap-x-2 items-center">Mật Khẩu <TheToolTip v-bind="request"/></label>
             <div class="relative">
-                <input type="password" id="password" placeholder="Mật khẩu" v-model="login.password" @change="validatePassword(login.password)" ref="input"
+                <input type="password" id="password" placeholder="Mật khẩu" v-model="login.password" @change="validatePassword(login.password)" ref="input1"
                 class="mt-2 appearance-none text-slate-900 bg-white rounded-md block w-full px-3 h-10 shadow-sm sm:text-sm focus:outline-none placeholder:text-slate-400 focus:ring-2 focus:ring-sky-500 ring-1 ring-slate-200" 
-                :class="{'border border-red-600':passwordError}"/>
-                <button class="absolute right-2 top-1/2 -translate-y-1/2" @click="toggleShowPassword">
+                :class="{'border border-red-600':pwValidate.isError}"/>
+                <button class="absolute right-2 top-1/2 -translate-y-1/2" @click="togglePassword">
                     <EyeIcon class="w-4 h-4 text-gray-600"/>
                 </button>
             </div>
-            <div v-if="passwordMsg" class="text-xs font-light text-red-600 mt-1">{{ passwordMsg }}</div>
+            <div v-if="pwValidate.isError" class="text-xs font-light text-red-600 mt-1">{{ pwValidate.message }}</div>
         </div>
         <button type="button" @click="submit"
             class="inline-flex justify-center rounded-lg text-sm font-semibold py-2.5 px-4 bg-slate-900 text-white hover:bg-slate-700 w-full">
@@ -58,7 +58,7 @@
         <div class="space-y-4 text-sm text-gray-900 sm:flex sm:items-center sm:justify-center sm:space-x-4 sm:space-y-0">
             <p class="text-center sm:text-left">Bạn chưa có tài khoản?</p>
             <NuxtLink
-                class="inline-flex justify-center rounded-lg text-sm font-semibold py-2.5 px-4 text-slate-500 ring-0 border border-slate-500 hover:border-slate-700 hover:text-gray-100 hover:bg-slate-700 duration-300 ease-out"
+                class="flex justify-center rounded-lg text-sm font-semibold py-2.5 px-4 text-slate-500 ring-0 border border-slate-500 hover:border-slate-700 hover:text-gray-100 hover:bg-slate-700 duration-300 ease-out"
                 to="/auth/register"><span>Đăng Ký</span></NuxtLink>
         </div>
         <NuxtLink to="/"
@@ -70,17 +70,15 @@
 </template>
 
 <script setup lang="ts">
-import GoogleIcon from '../svg/GoogleIcon.vue';
-import FacebookIcon from '../svg/FacebookIcon.vue';
-import TwitterIcon from '../svg/TwitterIcon.vue';
+import {GoogleIcon,FacebookIcon,TwitterIcon} from '~/components/svg';
 import TheToolTip from './TheToolTip.vue';
 import { ArrowLongLeftIcon, EyeIcon } from '@heroicons/vue/24/solid'
-
-import LoginLogic from "~/logic/pages/auth/login.logic";
+import {LoginLogic,AuthLogic} from "~/logic/pages/auth";
 
 const runtimeConfig = useRuntimeConfig()
 
-const {login,usernameMsg,passwordMsg,passwordError,LoginAsync,validateUserName,validatePassword,input,toggleShowPassword,usernameError} = LoginLogic();
+const {login,LoginAsync} = LoginLogic();
+const {unameValidate,input1,pwValidate,togglePassword,validatePassword,validateUserName} = AuthLogic();
 
 const request = {
     title:'Yêu cầu',

@@ -4,7 +4,7 @@
    <div class="w-full max-w-sm mt-6">
 
        <div class="mb-6">
-           <label for="user" class="block text-sm font-semibold leading-6 text-gray-900">Email đã đăng ký</label>
+           <label for="user" class="flex gap-x-2 items-center text-sm font-semibold leading-6 text-gray-900">Email đã đăng ký <TheToolTip v-bind="request"/></label>
            <input type="text" id="user" placeholder="Email"
                class="mt-2 appearance-none text-slate-900 bg-white rounded-md block w-full px-3 h-10 shadow-sm sm:text-sm focus:outline-none placeholder:text-slate-400 focus:ring-2 focus:ring-sky-500 ring-1 ring-slate-200" />
        </div>
@@ -24,5 +24,9 @@
 
 <script setup lang="ts">
 import { ArrowLongLeftIcon } from '@heroicons/vue/24/solid'
-
+import TheToolTip from './TheToolTip.vue';
+const request = {
+    title:'Yêu cầu',
+    message : 'Email sẽ được gửi đến nếu email tồn tại!'
+}
 </script>

@@ -9,6 +9,21 @@ export type LoginRequest = {
     password: string
 }
 
+export type RegisterRequest = {
+    username: string,
+    password: string,
+    repassword:string,
+    phone:string,
+    email:string,
+    fname:string,
+    lname:string
+}
+
+export type ValidateResponse = {
+    isError:boolean,
+    message:string
+}
+
 export type AuthResponse = {
     statusCode: number,
     message: string,
