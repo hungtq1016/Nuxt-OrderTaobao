@@ -9,8 +9,8 @@ export default {
     "./error.vue",
   ],
   plugins: [
-
-  ],
+    require('@tailwindcss/aspect-ratio'),
+],
   
 }
 

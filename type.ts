@@ -30,3 +30,15 @@ export type AuthResponse = {
     error:boolean,
     token:Authentication
 }
+export type Role = {
+    id: string,
+    name: string
+}
+export type UserInfo = {
+    id: string,
+    firstName: string,
+    lastName: string,
+    username:string,
+    email:string,
+    roles: Array<string>
+}

@@ -3,20 +3,22 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   css: ['~/assets/css/main.css'],
   modules: [
-    "@pinia/nuxt",
-    "@nuxtjs/google-fonts"
+    '@pinia/nuxt',
+    "@nuxtjs/google-fonts",
+    'nuxt-headlessui'
   ],
   nitro: {
     minify: true
   },
-  
   imports: {
     dirs: ['./stores'],
   },
-  pages: true,
-  pinia: {
-    autoImports: ['defineStore', 'acceptHMRUpdate'],
+
+  headlessui: {
+    prefix: 'Headless'
   },
+  pages: true,
+
   $production: {
     routeRules: {
       '/**': { isr: true }
