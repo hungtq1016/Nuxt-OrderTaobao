@@ -10,5 +10,8 @@
      { name: 'description', content: 'reset password' }
    ],
  })
+ definePageMeta({
+  layout: "auth",
+})
  </script>
  

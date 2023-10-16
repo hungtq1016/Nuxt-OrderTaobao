@@ -1,3 +1,3 @@
-<script setup lang="ts">
-await navigateTo('/auth/login')
+<template></template>
+<script lang="ts" setup>
 </script>

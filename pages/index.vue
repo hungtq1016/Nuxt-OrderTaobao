@@ -1,17 +1,10 @@
 <template>
     <div>
-        <button @click="clear">dangxuat</button>
+        Main
     </div>
 
 </template>
 
 <script setup lang="ts">
 
-
-const {clear} = useUserInfo()
-
 </script>
-
-<style scoped>
-
-</style>

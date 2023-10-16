@@ -50,7 +50,7 @@ export const useAuthInfo = () => {
         const database: IDBDatabase = await openConnectionAsync();
         const auth: Authentication | undefined = await readAuthAsync();
         if (auth) {
-            if (auth.accessToken !== newAuth.accessToken && auth.refreshToken !== newAuth.refreshToken) {
+            if (auth.accessToken !== newAuth.accessToken) {
                 const objectStore: IDBObjectStore = database.transaction(collectionName, "readwrite").objectStore(collectionName);
                 const result: boolean = await resolveAuthUpdate(objectStore, newAuth);
                 return Promise.resolve(result);

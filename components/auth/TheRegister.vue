@@ -67,7 +67,7 @@
                 :class="{'border border-red-600':phoneValidate.isError}"/>
             <div v-if="phoneValidate.isError" class="text-xs font-light text-red-600 mt-1">{{ phoneValidate.message }}</div>
         </div>
-        <button type="button" @click="submit"
+        <button type="submit" @click="submit"
             class="inline-flex justify-center rounded-lg text-sm font-semibold py-2.5 px-4 bg-slate-900 text-white hover:bg-slate-700 w-full">
             <span>Đăng Ký</span>
         </button>

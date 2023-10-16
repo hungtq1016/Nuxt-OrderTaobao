@@ -1,16 +1,12 @@
 <template>
   <div>
-    <NuxtLayout :name="layout">
+    <NuxtLayout >
       <NuxtPage/>
     </NuxtLayout>
   </div>
 </template>
 <script lang="ts" setup>
-const route = useRoute()
-const layout = computed(()=>{
-  if(route.path.split("/")[1] != "auth")
-    return "default";
- return "auth"
-});
- 
+const {permission} = useUserInfo()
+permission()
+
 </script>

@@ -13,7 +13,11 @@ export default defineNuxtConfig({
   imports: {
     dirs: ['./stores'],
   },
-
+  routeRules:{
+    '/auth': { redirect: '/auth/login' },
+    '/auth/**': { ssr: false ,prerender:true},
+    '/admin/**': { ssr: false },
+  },
   headlessui: {
     prefix: 'Headless'
   },
@@ -24,6 +28,12 @@ export default defineNuxtConfig({
       '/**': { isr: true }
     }
   },
+  router: {
+    options: {
+        strict: false
+    }
+},
+
   $development: {
     //
   },

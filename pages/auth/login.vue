@@ -11,4 +11,9 @@ useHead({
   ],
 })
 
+definePageMeta({
+  layout: "auth",
+  middleware:'auth'
+})
+
 </script>

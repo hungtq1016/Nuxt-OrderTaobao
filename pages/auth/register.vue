@@ -11,4 +11,9 @@ useHead({
     { name: 'description', content: 'register' }
   ],
 })
-</script>
+definePageMeta({
+  layout: "auth",
+  middleware:['auth']
+})
+
+</script> 

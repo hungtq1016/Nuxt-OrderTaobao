@@ -3,7 +3,7 @@ import AuthLogic from './auth.logic';
 
 const RegisterLogic = () => {
     const {unameValidate,pwValidate,emailValidate,rpwValidate,fnameValidate,lnameValidate,phoneValidate,
-        validatePassword,validateUserName,validateEmail,validateRePassword,validatePhone} = AuthLogic()
+        validatePassword,validateUserName,validateEmail,validateRePassword,validatePhone,validateFirstName,validateLastName} = AuthLogic()
 
     const register = ref<RegisterRequest>({
         username: '',
@@ -18,19 +18,26 @@ const RegisterLogic = () => {
     const isValidate = () : boolean=>{
         validatePassword(register.value.password)
         validateUserName(register.value.username)
-        validateUserName(register.value.fname)
-        validateUserName(register.value.lname)
+        validateFirstName(register.value.fname)
+        validateLastName(register.value.lname)
         validateEmail(register.value.email)
         validateRePassword(register.value.password,register.value.repassword)
         validatePhone(register.value.phone)
         return !unameValidate.value.isError && !pwValidate.value.isError
         && !emailValidate.value.isError && !rpwValidate.value.isError
-        && !unameValidate.value.isError && !lnameValidate.value.isError
+        && !fnameValidate.value.isError && !lnameValidate.value.isError
         && !phoneValidate.value.isError
     }
 
     const RegisterAsync = async (req: RegisterRequest, url: string): Promise<void> => {
-        const { updateAuthAsync } = useAuthInfo();        
+        const { updateAuthAsync } = useAuthInfo();   
+        const {isAuthen,fetchUser} = useUserInfo()   
+        
+        if (isAuthen) {
+            await navigateTo('/');
+            return
+        }
+        
         if (isValidate()) {            
             const { data, error, pending } = await useFetch<AuthResponse>(url, {
                 method: "POST",
@@ -52,7 +59,8 @@ const RegisterLogic = () => {
                     }
                     const saveResult: boolean | undefined = await updateAuthAsync(auth);
                     if (saveResult) {
-                        navigateTo('/');
+                        await fetchUser(auth)
+                        await navigateTo('/');
                         return;
                     }
                 }

@@ -46,15 +46,16 @@
             </transition>
           </Popover>
   
-          <a href="#" class="text-sm font-semibold leading-6 text-gray-900">Features</a>
-          <a href="#" class="text-sm font-semibold leading-6 text-gray-900">Marketplace</a>
+          <NuxtLink to="/admin" class="text-sm font-semibold leading-6 text-gray-900">Admin</NuxtLink>
+          <NuxtLink to="/auth/register" class="text-sm font-semibold leading-6 text-gray-900">Đăng Ký</NuxtLink>
+          <NuxtLink to="/auth" class="text-sm font-semibold leading-6 text-gray-900">Marketplace</NuxtLink>
           <a href="#" class="text-sm font-semibold leading-6 text-gray-900">Company</a>
         </PopoverGroup>
         <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-          <a href="#" class="text-sm font-semibold leading-6 text-gray-900">Log in <span aria-hidden="true">&rarr;</span></a>
+          <NuxtLink to="/auth/login" class="text-sm font-semibold leading-6 text-gray-900"><span>dang nhap</span></NuxtLink>
         </div>
       </nav>
-      <TheNavigationMobile :mobileMenuOpen="mobileMenuOpen" :products="products" :callsToAction="callsToAction" @close="()=>mobileMenuOpen = false"/>
+      <!-- <TheNavigationMobile :mobileMenuOpen="mobileMenuOpen" :products="products" :callsToAction="callsToAction" @close="()=>mobileMenuOpen = false"/> -->
     </header>
   </template>
   

@@ -1,17 +1,18 @@
 <template>
   <div>
-    admin
+    admin 
   </div>
 </template>
 
 <script lang="ts" setup>
-  definePageMeta({
-      middleware:["auth"]
-  })
+
+definePageMeta({
+  layout: "default",
+  middleware:['admin']
+})
+
 </script>
 
 
 
-<style>
-
-</style>
+<style></style>

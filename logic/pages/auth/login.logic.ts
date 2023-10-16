@@ -15,7 +15,14 @@ const LoginLogic = () => {
     }
 
     const LoginAsync = async (req: LoginRequest, url: string): Promise<void> => {
-        const { updateAuthAsync } = useAuthInfo();        
+        const { updateAuthAsync } = useAuthInfo();    
+        const {isAuthen,fetchUser} = useUserInfo()   
+        
+        if (isAuthen) {
+            await navigateTo('/');
+            return
+        }
+         
         if (isValidate()) {
             
             const { data, error, pending } = await useFetch<AuthResponse>(url, {
@@ -37,8 +44,10 @@ const LoginLogic = () => {
                         accessToken: data.value.token.accessToken
                     }
                     const saveResult: boolean | undefined = await updateAuthAsync(auth);
+                    
                     if (saveResult) {
-                        navigateTo('/');
+                        await fetchUser(auth)
+                        await navigateTo('/');
                         return;
                     }
                 }

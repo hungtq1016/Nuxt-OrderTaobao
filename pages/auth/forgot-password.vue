@@ -10,4 +10,7 @@ useHead({
     { name: 'description', content: 'forgot password' }
   ],
 })
+definePageMeta({
+  layout: "auth"
+});
 </script>

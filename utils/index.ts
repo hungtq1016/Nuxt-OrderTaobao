@@ -1,3 +1,4 @@
 import * as object from './object';
+import * as string from './string';
 
-export {object}
+export {object,string}
