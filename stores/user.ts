@@ -135,6 +135,7 @@ export const useUserInfo = defineStore('userInfo',() => {
             return;
         }
     }
+
     return {user,isEmpty,isAuthen,
         isAdmin,isCollaborator,isSuperAdmin,isCustomer,isManager,isStaff,isVisitor,
         permission,logout,fetchUser}

@@ -46,7 +46,7 @@ import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/vue/20/so
 import { Navigation } from '~/type';
 
 const props = defineProps({
-    navigations: Array<Navigation>
+    'navigations': Array<Navigation>
 })
 
 const callsToAction = [

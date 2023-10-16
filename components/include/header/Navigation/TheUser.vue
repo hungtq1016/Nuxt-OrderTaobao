@@ -44,5 +44,6 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { storeToRefs } from 'pinia';
 const userStore = useUserInfo()
-const { isAuthen,user } = storeToRefs(userStore)
+const { isAuthen } = storeToRefs(userStore)
+
 </script>
