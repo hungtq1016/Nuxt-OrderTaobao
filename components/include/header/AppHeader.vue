@@ -1,15 +1,11 @@
 
 <template>
   <div class="bg-white">
-    <TheNavigationAdmin />
-    <TheNavigationClient />
+    <TheNavigation />
+
   </div>
 </template>
   
 <script lang="ts" setup>
-import { storeToRefs } from 'pinia';
-import TheNavigationAdmin from './Admin/TheNavigation.vue';
-import TheNavigationClient from './Client/TheNavigation.vue';
-
-
+import TheNavigation from './Navigation/TheNavigation.vue';
 </script>

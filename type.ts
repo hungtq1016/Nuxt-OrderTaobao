@@ -1,3 +1,4 @@
+import { FunctionalComponent } from "vue"
 
 export type Authentication = {
     accessToken: string,
@@ -40,4 +41,12 @@ export type UserInfo = {
     lastName: string,
     userName:string,
     email:string,
+}
+
+export type Navigation = {
+    title: string,
+    slug: string,
+    description?: string,
+    icon: FunctionalComponent,
+    sub?:Array<Navigation>,
 }
