@@ -16,7 +16,7 @@ const LoginLogic = () => {
 
     const LoginAsync = async (req: LoginRequest, url: string): Promise<void> => {
         const { updateAuthAsync } = useAuthInfo();    
-        const {isAuthen,fetchUser} = useUserInfo()   
+        const {isAuthen} = useUserInfo()   
         
         if (isAuthen) {
             await navigateTo('/');
@@ -32,7 +32,8 @@ const LoginLogic = () => {
                 },
                 body: req
             });
-    
+           
+            
             if (error.value != null) {
                 console.log(error.value);
             } else {
@@ -46,7 +47,7 @@ const LoginLogic = () => {
                     const saveResult: boolean | undefined = await updateAuthAsync(auth);
                     
                     if (saveResult) {
-                        await fetchUser(auth)
+             
                         await navigateTo('/');
                         return;
                     }

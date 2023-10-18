@@ -42,6 +42,12 @@ export type UserInfo = {
     userName:string,
     email:string,
 }
+export type Permission = {
+    user?: UserInfo 
+    isPermission : boolean,
+    error : boolean,
+    message : string
+}
 
 export type Navigation = {
     title: string,

@@ -1,10 +1,10 @@
-import { storeToRefs } from "pinia"
 
-export default defineNuxtRouteMiddleware((to, from)=> {
-    const userStore = useUserInfo()
-    const {isAdmin,isSuperAdmin} = storeToRefs(userStore) 
+import {adminPermission} from '~/composables/usePermission';
+export default defineNuxtRouteMiddleware(async(to, from)=> {
+    const permission:boolean = await adminPermission()
     
-    if (!isAdmin.value&&!isSuperAdmin.value) {
+    if (!permission) {        
         return navigateTo('/auth/login')
     }
+    
 })

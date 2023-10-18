@@ -6,7 +6,5 @@
   </div>
 </template>
 <script lang="ts" setup>
-const {permission} = useUserInfo()
-permission()
 
 </script>

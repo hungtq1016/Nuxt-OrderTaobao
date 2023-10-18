@@ -36,10 +36,11 @@ export const useAuthInfo = () => {
     }
 
     const readAuthAsync = async (): Promise<Authentication | undefined> => {
-        const database: IDBDatabase = await openConnectionAsync();
+        const database: IDBDatabase = await openConnectionAsync();        
         try {
             const data: IDBRequest<Authentication> = database.transaction(collectionName, "readonly").objectStore(collectionName).get(authKey);
             const result: Authentication | undefined = await resolveAuthRead(data);
+        
             return Promise.resolve(result);
         } catch (error) {
             return Promise.resolve(undefined);
