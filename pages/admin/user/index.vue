@@ -1,13 +1,15 @@
 <template>
   <section>
     <ThePageHeader v-bind="header_props" />
-    <TheTable v-bind="data" />
+    <TheTable :columns="columns" v-bind="page" @update-page="(e:number)=>page.pageNumber = e" @update-size="(e:number)=>page.pageSize = e"/>
   </section>
 </template>
   
 <script setup lang="ts">
 import ThePageHeader from '~/components/admin/include/ThePageHeader.vue';
 import TheTable from '~/components/admin/table/TheTable.vue';
+import { TokenResponse,Column } from '~/type';
+import { User,Pagination } from '~/type';
 
 definePageMeta({
   layout: "admin",
@@ -25,62 +27,65 @@ const header_props = {
   slug: "/admin/user/add",
   slug_title: "Thêm mới"
 }
-const data = {
-  columns: [{
-    key: 'id',
-    label: 'ID',
-    sortable: true
-  }, {
-    key: 'name',
-    label: 'Name',
-    sortable: true
-  }, {
-    key: 'title',
-    label: 'Title'
-  }, {
-    key: 'email',
-    label: 'Email'
-  }, {
-    key: 'role',
-    label: 'Role'
-  },{ key: 'actions',label: 'Edit'}],
-  data: [{
-    id: 1,
-    name: 'Lindsay Walton',
-    title: 'Front-end Developer',
-    email: 'lindsay.walton@example.com',
-    role: 'Member'
-  }, {
-    id: 2,
-    name: 'Courtney Henry',
-    title: 'Designer',
-    email: 'courtney.henry@example.com',
-    role: 'Admin'
-  }, {
-    id: 3,
-    name: 'Tom Cook',
-    title: 'Director of Product',
-    email: 'tom.cook@example.com',
-    role: 'Member'
-  }, {
-    id: 4,
-    name: 'Whitney Francis',
-    title: 'Copywriter',
-    email: 'whitney.francis@example.com',
-    role: 'Admin'
-  }, {
-    id: 5,
-    name: 'Leonard Krasner',
-    title: 'Senior Designer',
-    email: 'leonard.krasner@example.com',
-    role: 'Owner'
-  }, {
-    id: 6,
-    name: 'Floyd Miles',
-    title: 'Principal Designer',
-    email: 'floyd.miles@example.com',
-    role: 'Member'
-  }]
-}
+const columns:Array<Column> = [{
+  key: 'id',
+  label: 'ID'
+}, {
+  key: 'userName',
+  label: 'Tài Khoản',
+  sortable: true
+},
+{
+  key: 'email',
+  label: 'Email',
+  sortable: true
+}, {
+  key: 'firstName',
+  label: 'Họ'
+}, {
+  key: 'lastName',
+  label: 'Tên'
+},
+{
+  key: 'phone',
+  label: 'Số Điện Thoại'
+},
+{ key: 'actions', label: 'Tùy Chỉnh' }
+]
 
+const indexedDb = useAuthInfo();
+const token: TokenResponse | undefined = await indexedDb.readAuthAsync();
+const page = ref<Pagination<Array<User>>>({
+    pageNumber:1,
+    pageSize:10,
+    firstPage:"",
+    lastPage :"",
+    totalPages :1,
+    totalRecords :1,
+    nextPage :"",
+    previousPage :"",
+    data:[],
+    error:false,
+    message:"",
+    statusCode:200
+})
+
+const runtimeConfig = useRuntimeConfig()
+const url = ref<string>(runtimeConfig.public.apiBase+'/users')
+
+await useAsyncData(
+    'users',
+    async() => {
+      const data = await $fetch<Pagination<Array<User>>>(url.value, {
+        headers: { Accept: 'application/json', Authorization: `Bearer ${token?.accessToken ?? ''}`, },
+        params: {
+          PageNumber: page.value.pageNumber,
+          PageSize:page.value.pageSize
+        } 
+      })
+      if (data) {
+        page.value = data
+      }
+    }, { watch: [()=>page.value.pageNumber,()=>page.value.pageSize] },
+  )
 </script>

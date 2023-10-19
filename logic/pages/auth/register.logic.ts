@@ -1,4 +1,4 @@
-import { RegisterRequest, Authentication, AuthResponse,ValidateResponse } from '~/type';
+import { RegisterRequest, TokenResponse, Response } from '~/type';
 import AuthLogic from './auth.logic';
 
 const RegisterLogic = () => {
@@ -34,7 +34,7 @@ const RegisterLogic = () => {
 
         if (isValidate()) {
             try {
-                const data = await $fetch<AuthResponse>(url, {
+                const data = await $fetch<Response<TokenResponse>>(url, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -44,9 +44,11 @@ const RegisterLogic = () => {
                 if (data == null) {
                     console.log('error');
                 } else {
-                    const auth: Authentication = {
+                    const auth: TokenResponse = {
                         refreshToken: data.data.refreshToken,
-                        accessToken: data.data.accessToken
+                        accessToken: data.data.accessToken,
+                        tokenType :data.data.tokenType,
+                        expiredAt:data.data.expiredAt
                     }
                     const saveResult: boolean | undefined = await updateAuthAsync(auth);
                     

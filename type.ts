@@ -1,8 +1,10 @@
 import { FunctionalComponent } from "vue"
 
-export type Authentication = {
+export type TokenResponse = {
     accessToken: string,
     refreshToken: string
+    tokenType? :string,
+    expiredAt?:string
 }
 
 export type LoginRequest = {
@@ -25,29 +27,40 @@ export type ValidateResponse = {
     message:string
 }
 
-export type AuthResponse = {
-    statusCode: number,
-    message: string,
-    error:boolean,
-    data:Authentication
-}
 export type Role = {
     id: string,
     name: string
 }
-export type UserInfo = {
+export type User = {
     id: string,
     firstName: string,
     lastName: string,
     userName:string,
     email:string,
+    phone:string,
 }
-export type Permission = {
-    data?: UserInfo 
+export type Permission<T> = Response<T> & {
     isAuthen : boolean,
     adminPermission : boolean,
-    error : boolean,
-    message : string
+}
+
+export type Column = {
+    [key: string]: any,
+    key: string,
+    sortable?: boolean,
+    direction?: "asc" | "desc", 
+    class?: string
+}
+
+export type Pagination<T> = Response<T> & {
+    pageNumber:number,
+    pageSize:number,
+    firstPage:string,
+    lastPage :string,
+    totalPages :number,
+    totalRecords :number,
+    nextPage :string,
+    previousPage :string,
 }
 
 export type Navigation = {
@@ -57,4 +70,11 @@ export type Navigation = {
     icon: FunctionalComponent,
     sub?:Array<Navigation>,
     enable?:boolean
+}
+
+export type Response<T> = {
+    data: T,
+    statusCode: number,
+    message: string,
+    error:boolean,
 }

@@ -1,5 +1,5 @@
 import { storeToRefs } from "pinia";
-import { Authentication, Permission } from "~/type";
+import { TokenResponse, Permission,User } from "~/type";
 
 const permissionAsync = async (): Promise<boolean> => {
     const customer = '/authorize/permission';  
@@ -11,14 +11,14 @@ const ResolvePermission = async (role:string,admin:boolean):Promise<boolean> => 
     const apiurl = runtimeConfig.public.apiBase;
     
     const indexedDb = useAuthInfo();
-    const token: Authentication | undefined = await indexedDb.readAuthAsync();
+    const token: TokenResponse | undefined = await indexedDb.readAuthAsync();
     const userStore = useUserInfo()
     const{user,isAuthen,adminPermission} = storeToRefs(userStore)  
     if (token == undefined) {
         return Promise.resolve(false);
     }else{
         try {  
-            const data = await $fetch<Permission>(apiurl+role,{
+            const data = await $fetch<Permission<User>>(apiurl+role,{
                 method:"POST",
                 headers: 
                     { 
@@ -26,7 +26,6 @@ const ResolvePermission = async (role:string,admin:boolean):Promise<boolean> => 
                     },
                 body:token
             })
-            console.log(data);
             
             if (data.error) {
                 return Promise.resolve(false);

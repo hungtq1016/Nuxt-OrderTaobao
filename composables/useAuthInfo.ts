@@ -1,4 +1,4 @@
-import { Authentication } from "~/type";
+import { TokenResponse } from "~/type";
 
 export const useAuthInfo = () => {
     const databaseName: string = 'Order-Taobao';
@@ -23,7 +23,7 @@ export const useAuthInfo = () => {
     }
 
 
-    const createAuthAsync = async (auth: Authentication): Promise<boolean> => {
+    const createAuthAsync = async (auth: TokenResponse): Promise<boolean> => {
         const database: IDBDatabase = await openConnectionAsync();
         try {
             database.transaction(collectionName, "readwrite").objectStore(collectionName).add(auth, authKey);
@@ -35,11 +35,11 @@ export const useAuthInfo = () => {
         }
     }
 
-    const readAuthAsync = async (): Promise<Authentication | undefined> => {
+    const readAuthAsync = async (): Promise<TokenResponse | undefined> => {
         const database: IDBDatabase = await openConnectionAsync();        
         try {
-            const data: IDBRequest<Authentication> = database.transaction(collectionName, "readonly").objectStore(collectionName).get(authKey);
-            const result: Authentication | undefined = await resolveAuthRead(data);
+            const data: IDBRequest<TokenResponse> = database.transaction(collectionName, "readonly").objectStore(collectionName).get(authKey);
+            const result: TokenResponse | undefined = await resolveAuthRead(data);
         
             return Promise.resolve(result);
         } catch (error) {
@@ -47,9 +47,9 @@ export const useAuthInfo = () => {
         }
     }
 
-    const updateAuthAsync = async (newAuth: Authentication): Promise<boolean | undefined> => {
+    const updateAuthAsync = async (newAuth: TokenResponse): Promise<boolean | undefined> => {
         const database: IDBDatabase = await openConnectionAsync();
-        const auth: Authentication | undefined = await readAuthAsync();
+        const auth: TokenResponse | undefined = await readAuthAsync();
         if (auth) {
             if (auth.accessToken !== newAuth.accessToken) {
                 const objectStore: IDBObjectStore = database.transaction(collectionName, "readwrite").objectStore(collectionName);
@@ -74,15 +74,15 @@ export const useAuthInfo = () => {
         }
     }
 
-    const resolveAuthRead = (data: IDBRequest<Authentication>): Promise<Authentication | undefined> => {
-        return new Promise<Authentication | undefined>((resolve) => {
+    const resolveAuthRead = (data: IDBRequest<TokenResponse>): Promise<TokenResponse | undefined> => {
+        return new Promise<TokenResponse | undefined>((resolve) => {
             data.onsuccess = () => resolve(data.result);
             data.onerror = () => resolve(undefined);
         });
     }
     
 
-    const resolveAuthUpdate = async (objectStore: IDBObjectStore, newAuth: Authentication): Promise<boolean> => {
+    const resolveAuthUpdate = async (objectStore: IDBObjectStore, newAuth: TokenResponse): Promise<boolean> => {
         return new Promise<boolean>((resolve) => {
             const request: IDBRequest<IDBValidKey> = objectStore.put(newAuth, authKey);
             request.onsuccess = () => resolve(true);
