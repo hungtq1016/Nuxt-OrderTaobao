@@ -1,8 +1,9 @@
 
-import {userPermisson} from '~/composables/usePermission';
+import {permissionAsync} from '~/composables/usePermission';
 export default defineNuxtRouteMiddleware(async(to, from)=> {
-    const permission:boolean = await userPermisson()
-    if (permission) {        
+    await permissionAsync()
+    const {isAuthen} = useUserInfo()
+    if (isAuthen) {        
         return navigateTo('/')
     }
     

@@ -142,7 +142,6 @@ const AuthLogic = () => {
             showRePassword.value = !showRePassword.value
         }
     }
-
  
     return {unameValidate,pwValidate,emailValidate,rpwValidate,input1,input2,lnameValidate,fnameValidate,phoneValidate,
         validateUserName,validatePassword,togglePassword,toggleRePassword,validateEmail,validateRePassword,validatePhone,validateFirstName,validateLastName}

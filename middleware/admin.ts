@@ -1,9 +1,11 @@
 
-import {adminPermission} from '~/composables/usePermission';
+import { permissionAsync } from '~/composables/usePermission';
 export default defineNuxtRouteMiddleware(async(to, from)=> {
-    const permission:boolean = await adminPermission()
     
-    if (!permission) {        
+    await permissionAsync()
+    const {adminPermission} = useUserInfo()
+
+    if (!adminPermission) {        
         return navigateTo('/auth/login')
     }
     

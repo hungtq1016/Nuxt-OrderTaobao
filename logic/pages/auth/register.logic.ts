@@ -31,44 +31,35 @@ const RegisterLogic = () => {
 
     const RegisterAsync = async (req: RegisterRequest, url: string): Promise<void> => {
         const { updateAuthAsync } = useAuthInfo();   
-        const {isAuthen,fetchUser} = useUserInfo()   
-        
-        if (isAuthen) {
-            await navigateTo('/');
-            return
-        }
-        
-        if (isValidate()) {            
-            const { data, error, pending } = await useFetch<AuthResponse>(url, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: req
-            });
-    
-            if (error.value != null) {
-                console.log(error.value);
-            } else {
-                if (data.value == null) {
+
+        if (isValidate()) {
+            try {
+                const data = await $fetch<AuthResponse>(url, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: req
+                });           
+                if (data == null) {
                     console.log('error');
                 } else {
                     const auth: Authentication = {
-                        refreshToken: data.value.token.refreshToken,
-                        accessToken: data.value.token.accessToken
+                        refreshToken: data.data.refreshToken,
+                        accessToken: data.data.accessToken
                     }
                     const saveResult: boolean | undefined = await updateAuthAsync(auth);
+                    
                     if (saveResult) {
-                        await fetchUser(auth)
                         await navigateTo('/');
                         return;
                     }
                 }
-    
+            } catch (error) {
+                console.log(error);
             }
         }
         
-
     }
         
     return { register ,RegisterAsync}

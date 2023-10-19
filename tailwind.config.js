@@ -9,7 +9,7 @@ export default {
     "./error.vue",
   ],
   plugins: [
-    require('@tailwindcss/aspect-ratio'),
+    require('@tailwindcss/aspect-ratio','@tailwindcss/forms'),
 ],
   
 }

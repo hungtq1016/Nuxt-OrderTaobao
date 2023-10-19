@@ -29,7 +29,7 @@ export type AuthResponse = {
     statusCode: number,
     message: string,
     error:boolean,
-    token:Authentication
+    data:Authentication
 }
 export type Role = {
     id: string,
@@ -43,8 +43,9 @@ export type UserInfo = {
     email:string,
 }
 export type Permission = {
-    user?: UserInfo 
-    isPermission : boolean,
+    data?: UserInfo 
+    isAuthen : boolean,
+    adminPermission : boolean,
     error : boolean,
     message : string
 }
@@ -55,4 +56,5 @@ export type Navigation = {
     description?: string,
     icon: FunctionalComponent,
     sub?:Array<Navigation>,
+    enable?:boolean
 }

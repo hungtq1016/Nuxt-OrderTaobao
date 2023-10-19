@@ -24,15 +24,23 @@
                 <MenuItems
                     class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                     <MenuItem v-slot="{ active }">
-                    <a href="#" :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">Your
-                        Profile</a>
+                        <NuxtLink to="#" :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">
+                            Trang Cá Nhân
+                        </NuxtLink>
                     </MenuItem>
                     <MenuItem v-slot="{ active }">
-                    <a href="#" :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">Settings</a>
+                        <NuxtLink v-if="adminPermission" to="/admin" :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">
+                            Trang Quản Trị
+                        </NuxtLink>
                     </MenuItem>
                     <MenuItem v-slot="{ active }">
-                    <button @click="userStore.logout"
-                        :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">Sign out</button>
+                        <NuxtLink to="#" :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">
+                            Cài Đặt
+                        </NuxtLink>
+                    </MenuItem>
+                    <MenuItem v-slot="{ active }">
+                    <button @click="userStore.logOut"
+                        :class="[active ? 'bg-gray-100' : '', 'block w-full text-left px-4 py-2 text-sm text-gray-700']">Đăng Xuất</button>
                     </MenuItem>
                 </MenuItems>
             </transition>
@@ -44,6 +52,6 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { storeToRefs } from 'pinia';
 const userStore = useUserInfo()
-const { isAuthen } = storeToRefs(userStore)
+const { isAuthen,adminPermission } = storeToRefs(userStore)
 
 </script>

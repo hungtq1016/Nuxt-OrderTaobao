@@ -5,7 +5,8 @@ export default defineNuxtConfig({
   modules: [
     '@pinia/nuxt',
     "@nuxtjs/google-fonts",
-    'nuxt-headlessui'
+    'nuxt-headlessui',
+    '@nuxt/ui'
   ],
   nitro: {
     minify: true
@@ -15,6 +16,8 @@ export default defineNuxtConfig({
   },
   routeRules:{
     '/auth': { redirect: '/auth/login' },
+    '/admin/user/edit': { redirect: '/admin/user' },
+    '/admin/user/edit/': { redirect: '/admin/user' },
     '/auth/**': { ssr: false ,prerender:true},
     '/admin/**': { ssr: false },
   },

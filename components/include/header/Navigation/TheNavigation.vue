@@ -34,9 +34,9 @@
   import { ArrowPathIcon, Bars3Icon, ChartPieIcon, CursorArrowRaysIcon, FingerPrintIcon, SquaresPlusIcon, } from '@heroicons/vue/24/outline'
   import TheUser from './TheUser.vue';
   import TheDropDown from './TheDropDown.vue';
-  import {userPermisson} from '~/composables/usePermission';
+  import {permissionAsync} from '~/composables/usePermission';
 
-   userPermisson()
+  permissionAsync()
   const navigations : Array<Navigation> = [
     { title: 'Analytics', description: 'Get a better understanding of your traffic', slug: '#', icon: ChartPieIcon },
     { title: 'Engagement', description: 'Speak directly to your customers', slug: '#', icon: CursorArrowRaysIcon },

@@ -1,23 +1,19 @@
 import { storeToRefs } from "pinia";
 import { Authentication, Permission } from "~/type";
 
-const adminPermission = async (): Promise<boolean> => {
-    const admin = '/authorize/admin-permission';  
-    return permission(admin);
-}
-const userPermisson = async (): Promise<boolean> => {
-    const customer = '/authorize/user-permission';  
-    return permission(customer);
+const permissionAsync = async (): Promise<boolean> => {
+    const customer = '/authorize/permission';  
+    return ResolvePermission(customer,false);
 }
 
-const permission = async (role:string):Promise<boolean> => {
+const ResolvePermission = async (role:string,admin:boolean):Promise<boolean> => {
     const runtimeConfig = useRuntimeConfig();
     const apiurl = runtimeConfig.public.apiBase;
     
     const indexedDb = useAuthInfo();
     const token: Authentication | undefined = await indexedDb.readAuthAsync();
     const userStore = useUserInfo()
-    const{user,isAuthen} = storeToRefs(userStore)
+    const{user,isAuthen,adminPermission} = storeToRefs(userStore)  
     if (token == undefined) {
         return Promise.resolve(false);
     }else{
@@ -30,13 +26,16 @@ const permission = async (role:string):Promise<boolean> => {
                     },
                 body:token
             })
+            console.log(data);
+            
             if (data.error) {
                 return Promise.resolve(false);
             }else{
-                if (data?.user !== undefined) {
-                    user.value = data?.user
+                if (data?.data !== undefined) {
+                    user.value = data?.data
                 } 
-                if (data.isPermission === true) {
+                if (data.isAuthen === true) {
+                    adminPermission.value = data.adminPermission
                     isAuthen.value = true
                     return Promise.resolve(true);
                 }  
@@ -48,4 +47,4 @@ const permission = async (role:string):Promise<boolean> => {
     }
 }
 
-export {canAccess,userPermisson,adminPermission}
+export {canAccess,permissionAsync}
