@@ -28,7 +28,7 @@
 
 <script setup lang="ts">
 
-const props = defineProps(['data', 'columns', 'pageSize', 'pageNumber', 'totalPages', 'totalRecords'])
+const props = defineProps(['data', 'columns', 'pageSize', 'pageNumber', 'totalPages', 'totalRecords','items'])
 const emit = defineEmits(['update-page', 'update-size'])
 const page = ref<number>(props.pageNumber)
 
@@ -69,34 +69,6 @@ const pages = [[
   },
 ]]
 
-const items = (row: any) => [
-  [
-  {
-    label: 'View',
-    icon: 'i-heroicons-eye-20-solid',
-    click: async () => await navigateTo(`/admin/user/${row.id}`),
-    shortcuts: ['V'],
-  },{
-    label: 'Edit',
-    icon: 'i-heroicons-pencil-square-20-solid',
-    click: async () => await navigateTo(`/admin/user/edit/${row.id}`),
-    shortcuts: ['E'],
-  }, {
-    label: 'Clone',
-    icon: 'i-heroicons-document-duplicate-20-solid',
-    shortcuts: ['C'],
-  }], [{
-    label: 'Archive',
-    icon: 'i-heroicons-archive-box-20-solid'
-  }, {
-    label: 'Move',
-    icon: 'i-heroicons-arrow-right-circle-20-solid'
-  }], [{
-    label: 'Delete',
-    icon: 'i-heroicons-trash-20-solid',
-    shortcuts: ['D']
-  }]
-]
 
 
 

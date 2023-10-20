@@ -13,13 +13,14 @@ export type LoginRequest = {
 }
 
 export type RegisterRequest = {
-    username: string,
+    id?:string
+    userName: string,
     password: string,
     repassword:string,
     phone:string,
     email:string,
-    fname:string,
-    lname:string
+    firstName:string,
+    lastName:string
 }
 
 export type ValidateResponse = {
@@ -32,13 +33,33 @@ export type Role = {
     name: string
 }
 export type User = {
-    id: string,
+    id?: string,
     firstName: string,
     lastName: string,
     userName:string,
+    password:string,
     email:string,
     phone:string,
 }
+
+export type UserDetail = User & {
+    phoneNumberConfirmed : boolean,
+    twoFactorEnabled : boolean,
+    enable:boolean,
+    emailConfirmed:boolean
+}
+
+export type Order = {
+    [key:string]:string|number
+}
+
+export type UserShow = {
+    roles:Array<string>,
+    user:UserDetail,
+    orders:Array<Order>,
+    notifications:Array<Order>,
+}
+
 export type Permission<T> = Response<T> & {
     isAuthen : boolean,
     adminPermission : boolean,

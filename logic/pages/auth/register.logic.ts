@@ -6,20 +6,20 @@ const RegisterLogic = () => {
         validatePassword,validateUserName,validateEmail,validateRePassword,validatePhone,validateFirstName,validateLastName} = AuthLogic()
 
     const register = ref<RegisterRequest>({
-        username: '',
+        userName: '',
         password: '',
         repassword: '',
         phone: '',
         email: '',
-        fname: '',
-        lname: ''
+        firstName: '',
+        lastName: ''
     })
     
     const isValidate = () : boolean=>{
         validatePassword(register.value.password)
-        validateUserName(register.value.username)
-        validateFirstName(register.value.fname)
-        validateLastName(register.value.lname)
+        validateUserName(register.value.userName)
+        validateFirstName(register.value.firstName)
+        validateLastName(register.value.lastName)
         validateEmail(register.value.email)
         validateRePassword(register.value.password,register.value.repassword)
         validatePhone(register.value.phone)

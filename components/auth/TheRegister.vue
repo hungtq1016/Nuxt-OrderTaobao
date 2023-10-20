@@ -5,7 +5,7 @@
 
         <div class="mb-6">
             <label for="user" class="block text-sm font-semibold leading-6 text-gray-900">Tài Khoản</label>
-            <input type="text" id="user" placeholder="Tài khoản" v-model="register.username" @change="validateUserName(register.username)" autocomplete="username"
+            <input type="text" id="user" placeholder="Tài khoản" v-model="register.userName" @change="validateUserName(register.userName)" autocomplete="username"
                 class="mt-2 appearance-none text-slate-900 bg-white rounded-md block w-full px-3 h-10 shadow-sm sm:text-sm focus:outline-none placeholder:text-slate-400 focus:ring-2 focus:ring-sky-500 ring-1 ring-slate-200" 
                 :class="{'border border-red-600':unameValidate.isError}"/>
                 <div v-if="unameValidate.isError" class="text-xs font-light text-red-600 mt-1">{{ unameValidate.message }}</div>
@@ -46,13 +46,13 @@
             <label for="fname" class="block text-sm font-semibold leading-6 text-gray-900">Họ và Tên</label>
             <div class="grid grid-cols-2 gap-x-2">
                 <div>
-                    <input type="text" id="fname" placeholder="Họ" v-model="register.fname" @change="validateFirstName(register.fname)" autocomplete="first-name"
+                    <input type="text" id="fname" placeholder="Họ" v-model="register.firstName" @change="validateFirstName(register.firstName)" autocomplete="first-name"
                     class="mt-2 appearance-none text-slate-900 bg-white rounded-md block w-full px-3 h-10 shadow-sm sm:text-sm focus:outline-none placeholder:text-slate-400 focus:ring-2 focus:ring-sky-500 ring-1 ring-slate-200" 
                     :class="{'border border-red-600':fnameValidate.isError}"/>
                     <div v-if="fnameValidate.isError" class="text-xs font-light text-red-600 mt-1">{{ fnameValidate.message }}</div>
                 </div>
                 <div>
-                    <input type="text" id="lname" placeholder="Tên" v-model="register.lname" @change="validateLastName(register.lname)" autocomplete="last-name"
+                    <input type="text" id="lname" placeholder="Tên" v-model="register.lastName" @change="validateLastName(register.lastName)" autocomplete="last-name"
                     class="mt-2 appearance-none text-slate-900 bg-white rounded-md block w-full px-3 h-10 shadow-sm sm:text-sm focus:outline-none placeholder:text-slate-400 focus:ring-2 focus:ring-sky-500 ring-1 ring-slate-200" 
                     :class="{'border border-red-600':lnameValidate.isError}"/>
                     <div v-if="lnameValidate.isError" class="text-xs font-light text-red-600 mt-1">{{ lnameValidate.message }}</div>

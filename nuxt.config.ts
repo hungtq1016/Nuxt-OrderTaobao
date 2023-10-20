@@ -6,7 +6,8 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     "@nuxtjs/google-fonts",
     'nuxt-headlessui',
-    '@nuxt/ui'
+    '@nuxt/ui',
+    // 'nuxt-sweetalert2'
   ],
   nitro: {
     minify: true

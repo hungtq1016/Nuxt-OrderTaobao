@@ -1,6 +1,7 @@
 import { storeToRefs } from "pinia";
 import { TokenResponse, Permission,User } from "~/type";
 
+
 const permissionAsync = async (): Promise<boolean> => {
     const customer = '/authorize/permission';  
     return ResolvePermission(customer,false);
