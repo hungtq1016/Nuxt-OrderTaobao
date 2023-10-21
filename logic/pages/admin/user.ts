@@ -36,6 +36,7 @@ const dataDetail = ref<UserShow>({
         firstName: "",
         lastName: "",
         enable: true,
+        password:"",
         phoneNumberConfirmed: false,
         twoFactorEnabled: false,
         emailConfirmed: false,
@@ -45,7 +46,6 @@ const dataDetail = ref<UserShow>({
     orders: [],
     roles: []
 })
-
 
 const createUserAsync = async (url: string, body: RegisterRequest) => {
     try {

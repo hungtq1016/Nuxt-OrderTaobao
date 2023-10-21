@@ -23,6 +23,13 @@ export type RegisterRequest = {
     lastName:string
 }
 
+export type ResetPasswordRequest = {
+    idResetPassword:string
+    password: string,
+    repassword:string,
+    email:string
+}
+
 export type ValidateResponse = {
     isError:boolean,
     message:string
