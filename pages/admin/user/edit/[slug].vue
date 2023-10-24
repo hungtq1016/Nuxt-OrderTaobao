@@ -4,7 +4,7 @@
 
 <script setup lang="ts">
 import TheForm from '~/components/admin/user/TheForm.vue';
-import { readUserAsync,dataDetail,dataUser } from '~/logic/pages/admin/user';
+import { readUserAsync,dataDetail,state } from '~/logic/pages/admin/user';
 const route = useRoute();
 
 definePageMeta({
@@ -21,6 +21,6 @@ const runtimeConfig = useRuntimeConfig()
 
 await readUserAsync(runtimeConfig.public.apiBase+'/users/'+route.params.slug)
 
-dataUser.value = dataDetail.value.user 
+state.value = dataDetail.value.user 
 
 </script>

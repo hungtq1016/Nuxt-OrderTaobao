@@ -39,6 +39,11 @@ export type Role = {
     id: string,
     name: string
 }
+
+export type SendEmailRequest = {
+    email: string
+}
+
 export type User = {
     id?: string,
     firstName: string,
@@ -80,7 +85,7 @@ export type Column = {
     class?: string
 }
 
-export type Pagination<T> = Response<T> & {
+export type Pagination<T> = {
     pageNumber:number,
     pageSize:number,
     firstPage:string,
@@ -89,6 +94,7 @@ export type Pagination<T> = Response<T> & {
     totalRecords :number,
     nextPage :string,
     previousPage :string,
+    data:T
 }
 
 export type Navigation = {

@@ -4,7 +4,7 @@
   
 <script setup>
 import TheForm from '~/components/admin/user/TheForm.vue';
-import { init_state,dataUser } from '~/logic/pages/admin/user';
+import { init_state,state } from '~/logic/pages/admin/user';
 definePageMeta({
   layout: "admin",
   middleware: ['admin']
@@ -15,5 +15,5 @@ useHead({
     { name: 'description', content: 'login' }
   ],
 })
-dataUser.value =init_state
+state.value =init_state
 </script>

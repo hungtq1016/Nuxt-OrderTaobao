@@ -1,11 +1,11 @@
 <template>
   <div class="space-y-3 mt-3">
     <div class="flex items-center justify-between flex-wrap gap-2">
-      <USelectMenu v-model="selectedColumns" :options="columns" multiple placeholder="Chọn Cột"
+      <USelectMenu v-model="selectedColumns" :options="columns" multiple placeholder="Select Row"
         class="md:w-auto w-full" />
-      <UInput v-model="q" placeholder="Lọc dữ liệu" class="md:w-auto w-full" />
+      <UInput v-model="q" placeholder="Filter value" class="md:w-auto w-full" />
     </div>
-    <UTable :rows="filteredRows" :columns="selectedColumns" v-model="selected"
+    <UTable :rows="filteredRows" :columns="selectedColumns" v-model="selected" :loading-state="{ icon: 'i-heroicons-arrow-path-20-solid', label: 'Loading...' }"
       sort-asc-icon="i-heroicons-arrow-up-20-solid" sort-desc-icon="i-heroicons-arrow-down-20-solid"
       :sort-button="{ icon: 'i-heroicons-sparkles-20-solid', color: 'primary', variant: 'outline', size: 'xs', square: false }">
       <template #actions-data="{ row }">
@@ -16,7 +16,7 @@
     </UTable>
     <div class="flex items-center justify-between flex-wrap gap-2">
       <UDropdown :items="pages" :popper="{ placement: 'bottom-start' }" class="md:w-auto w-full">
-        <UButton color="white" :label="`Đang chọn: ${pageSize}`" trailing-icon="i-heroicons-chevron-down-20-solid" />
+        <UButton color="white" :label="`Selected: ${pageSize}`" trailing-icon="i-heroicons-chevron-down-20-solid" />
       </UDropdown>
       <UPagination @update:model-value="(e: number) => emit('update-page', e)"
         :prev-button="{ icon: 'i-heroicons-arrow-small-left-20-solid', color: 'gray' }"

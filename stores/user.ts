@@ -1,11 +1,13 @@
-import { Authentication, UserInfo } from "~/type"
+import { TokenResponse, User } from "~/type"
 
-const init_user : UserInfo = {
+const init_user : User = {
     id: '',
     firstName: '',
     lastName: '',
     userName: '',
     email: '',
+    password:'',
+    phone:''
 }
 
 export const useUserInfo = defineStore('userInfo',() => {
@@ -22,11 +24,11 @@ export const useUserInfo = defineStore('userInfo',() => {
         const runtimeConfig = useRuntimeConfig();
         const indexedDb = useAuthInfo();
         const apiurl = runtimeConfig.public.apiBase;
-        const token: Authentication | undefined = await indexedDb.readAuthAsync();
+        const token: TokenResponse | undefined = await indexedDb.readAuthAsync();
         isAuthen.value = false
         adminPermission.value= false
         const logout = '/authenticate/logout';  
-        
+            
         if (token == undefined) {
             navigateTo('/auth/login');
         }else{
@@ -40,7 +42,7 @@ export const useUserInfo = defineStore('userInfo',() => {
                     body:token
                 })          
                 const success = await indexedDb.deleteAuthAsync();
-                if (success) {
+                if (success) {                    
                     navigateTo('/auth/login')
                 }
             } catch (error) {

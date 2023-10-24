@@ -1,8 +1,11 @@
 import { Pagination, RegisterRequest, Response, TokenResponse, User, UserShow } from "~/type";
+import type { FormError } from '@nuxt/ui/dist/runtime/types'
+
 const indexedDb = useAuthInfo();
 const token: TokenResponse | undefined = await indexedDb.readAuthAsync();
 const runtimeConfig = useRuntimeConfig()
-const init_state:User = {
+const { errorNotification, successNotification, callBackNotification } = useNotification()
+const init_state: User = {
     email: "",
     firstName: "",
     lastName: "",
@@ -20,12 +23,33 @@ const dataTable = ref<Pagination<Array<User>>>({
     nextPage: "",
     previousPage: "",
     data: [],
-    error: false,
-    message: "",
-    statusCode: 200
 })
 
-const dataUser = ref<User>(init_state)
+const dataTableDelete = ref<Pagination<Array<User>>>({
+    pageNumber: 1,
+    pageSize: 10,
+    firstPage: "",
+    lastPage: "",
+    totalPages: 1,
+    totalRecords: 1,
+    nextPage: "",
+    previousPage: "",
+    data: [],
+})
+
+const state = ref<User>(init_state)
+const { passwordRegex, emailRegex, phoneRegex } = useRegex()
+
+const validate = (state: RegisterRequest): FormError[] => {
+    const errors = []
+    if (!passwordRegex.test(state.password)) errors.push({ path: 'password', message: 'Invalid password' })
+    if (!emailRegex.test(state.email)) errors.push({ path: 'email', message: 'Invalid email' })
+    if (!phoneRegex.test(state.phone)) errors.push({ path: 'phone', message: 'Invalid phone' })
+    if (!state.userName) errors.push({ path: 'username', message: 'Invalid user name' })
+    if (!state.firstName) errors.push({ path: 'firstname', message: 'Invalid first name' })
+    if (!state.lastName) errors.push({ path: 'lastname', message: 'Invalid last name' })
+    return errors
+}
 
 const dataDetail = ref<UserShow>({
     user: {
@@ -36,7 +60,7 @@ const dataDetail = ref<UserShow>({
         firstName: "",
         lastName: "",
         enable: true,
-        password:"",
+        password: "",
         phoneNumberConfirmed: false,
         twoFactorEnabled: false,
         emailConfirmed: false,
@@ -54,18 +78,22 @@ const createUserAsync = async (url: string, body: RegisterRequest) => {
             headers: { Accept: 'application/json', Authorization: `Bearer ${token?.accessToken ?? ''}`, },
             body: body
         });
-
+        if (!data.error) {
+            successNotification(data.message, 'Create User.')
+            await navigateTo('/admin/user');
+        }
     } catch (error) {
         console.log(error);
+        errorNotification('Cannot create.')
     }
 }
 
 const readUsersAsync = async (url: string) => {
     try {
-        const { data } = await useAsyncData(
+        await useAsyncData(
             'users',
             async () => {
-                const data = await $fetch<Pagination<Array<User>>>(url, {
+                const data = await $fetch<Response<Pagination<Array<User>>>>(url, {
                     headers: { Accept: 'application/json', Authorization: `Bearer ${token?.accessToken ?? ''}`, },
                     params: {
                         PageNumber: dataTable.value.pageNumber,
@@ -73,7 +101,7 @@ const readUsersAsync = async (url: string) => {
                     }
                 })
                 if (data) {
-                    dataTable.value = data
+                    dataTable.value = data.data
                 }
             }, { watch: [() => dataTable.value.pageNumber, () => dataTable.value.pageSize, () => dataTable.value.totalRecords] },
         )
@@ -82,6 +110,30 @@ const readUsersAsync = async (url: string) => {
         console.log(error);
     }
 }
+
+const readUsersDeleteAsync = async (url: string) => {
+    try {
+        await useAsyncData(
+            'users',
+            async () => {
+                const data = await $fetch<Response<Pagination<Array<User>>>>(url, {
+                    headers: { Accept: 'application/json', Authorization: `Bearer ${token?.accessToken ?? ''}`, },
+                    params: {
+                        PageNumber: dataTable.value.pageNumber,
+                        PageSize: dataTable.value.pageSize
+                    },
+                })
+                if (data) {
+                    dataTableDelete.value = data.data
+                }
+            }, { watch: [() => dataTable.value.pageNumber, () => dataTable.value.pageSize, () => dataTable.value.totalRecords] },
+        )
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 const readUserAsync = async (url: string) => {
     try {
         await useAsyncData(
@@ -107,10 +159,13 @@ const updateUserAsync = async (url: string, body: RegisterRequest) => {
             headers: { Accept: 'application/json', Authorization: `Bearer ${token?.accessToken ?? ''}`, },
             body: body
         });
-
-
+        if (!data.error) {
+            successNotification(data.message, 'Update User.')
+            await navigateTo('/admin/user');
+        }
     } catch (error) {
         console.log(error);
+        errorNotification('Cannot update.')
     }
 }
 
@@ -120,17 +175,27 @@ const deleteUserAsync = async (url: string) => {
             method: "DELETE",
             headers: { Accept: 'application/json', Authorization: `Bearer ${token?.accessToken ?? ''}`, },
         });
-        dataTable.value.totalRecords--;
+        if (!data.error) {
+            successNotification(data.message, 'Delete User.')
+            dataTableDelete.value.totalRecords--;
+            dataTable.value.totalRecords--;
 
+        }
     } catch (error) {
         console.log(error);
+        errorNotification('Cannot delete.')
     }
 }
+
 const deleteUser = async (id: string) => {
-    await deleteUserAsync(`${runtimeConfig.public.apiBase}/users/${id}`)
+    callBackNotification("Want to delete user?", () => deleteUserAsync(`${runtimeConfig.public.apiBase}/users/${id}`))
 }
 
-const items = (row: any) => [
+const absoluteDelete = async (id: string) => {
+    callBackNotification("Want to delete user?", () => deleteUserAsync(`${runtimeConfig.public.apiBase}/users/${id}/delete`))
+}
+
+const items = (row: User) => [
     [
         {
             label: 'View',
@@ -150,10 +215,26 @@ const items = (row: any) => [
             label: 'Delete',
             icon: 'i-heroicons-trash-20-solid',
             shortcuts: ['D'],
-            click: async () => await deleteUser(row.id),
+            click: async () => await deleteUser(String(row.id)),
         }]
 ]
+
+const itemsDelete = (row: User) => [
+    [
+        {
+            label: 'Restore',
+            icon: 'i-heroicons-pencil-square-20-solid',
+            click: async () => await navigateTo(`/admin/user/edit/${row.id}`),
+            shortcuts: ['R'],
+        }], [{
+            label: 'Absolute Delete',
+            icon: 'i-heroicons-trash-20-solid',
+            shortcuts: ['A'],
+            click: async () => await absoluteDelete(String(row.id)),
+        }]
+]
+
 export {
-    createUserAsync, readUsersAsync, updateUserAsync, deleteUserAsync, readUserAsync,
-    dataTable, dataUser, dataDetail, items,init_state
+    createUserAsync, readUsersAsync, updateUserAsync, deleteUserAsync, readUserAsync, readUsersDeleteAsync,
+    dataTable, state, dataDetail, items, init_state, dataTableDelete, itemsDelete, validate
 }
