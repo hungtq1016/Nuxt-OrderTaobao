@@ -5,7 +5,8 @@
         class="md:w-auto w-full" />
       <UInput v-model="q" placeholder="Filter value" class="md:w-auto w-full" />
     </div>
-    <UTable :rows="filteredRows" :columns="selectedColumns" v-model="selected" :loading-state="{ icon: 'i-heroicons-arrow-path-20-solid', label: 'Loading...' }"
+    <UTable :rows="filteredRows" :columns="selectedColumns" v-model="selected"
+      :loading-state="{ icon: 'i-heroicons-arrow-path-20-solid', label: 'Loading...' }"
       sort-asc-icon="i-heroicons-arrow-up-20-solid" sort-desc-icon="i-heroicons-arrow-down-20-solid"
       :sort-button="{ icon: 'i-heroicons-sparkles-20-solid', color: 'primary', variant: 'outline', size: 'xs', square: false }">
       <template #actions-data="{ row }">
@@ -28,7 +29,7 @@
 
 <script setup lang="ts">
 
-const props = defineProps(['data', 'columns', 'pageSize', 'pageNumber', 'totalPages', 'totalRecords','items'])
+const props = defineProps(['data', 'columns', 'pageSize', 'pageNumber', 'totalPages', 'totalRecords', 'items'])
 const emit = defineEmits(['update-page', 'update-size'])
 const page = ref<number>(props.pageNumber)
 
@@ -68,8 +69,5 @@ const pages = [[
     click: () => emit('update-size', 100),
   },
 ]]
-
-
-
 
 </script>

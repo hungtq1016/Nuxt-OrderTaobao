@@ -5,7 +5,8 @@ const indexedDb = useAuthInfo();
 const token: TokenResponse | undefined = await indexedDb.readAuthAsync();
 const runtimeConfig = useRuntimeConfig()
 const { errorNotification, successNotification, callBackNotification } = useNotification()
-const init_state: User = {
+
+const init_state : User = {
     email: "",
     firstName: "",
     lastName: "",
@@ -13,19 +14,8 @@ const init_state: User = {
     phone: "",
     userName: "",
 }
-const dataTable = ref<Pagination<Array<User>>>({
-    pageNumber: 1,
-    pageSize: 10,
-    firstPage: "",
-    lastPage: "",
-    totalPages: 1,
-    totalRecords: 1,
-    nextPage: "",
-    previousPage: "",
-    data: [],
-})
 
-const dataTableDelete = ref<Pagination<Array<User>>>({
+const init_table : Pagination<Array<User>> = {
     pageNumber: 1,
     pageSize: 10,
     firstPage: "",
@@ -35,9 +25,14 @@ const dataTableDelete = ref<Pagination<Array<User>>>({
     nextPage: "",
     previousPage: "",
     data: [],
-})
+}
+
+const dataTable = ref<Pagination<Array<User>>>(init_table)
+
+const dataDeletedTable = ref<Pagination<Array<User>>>(init_table)
 
 const state = ref<User>(init_state)
+
 const { passwordRegex, emailRegex, phoneRegex } = useRegex()
 
 const validate = (state: RegisterRequest): FormError[] => {
@@ -111,24 +106,20 @@ const readUsersAsync = async (url: string) => {
     }
 }
 
-const readUsersDeleteAsync = async (url: string) => {
+const readUsersDeletedAsync = async (url: string) => {
     try {
-        await useAsyncData(
-            'users',
-            async () => {
-                const data = await $fetch<Response<Pagination<Array<User>>>>(url, {
-                    headers: { Accept: 'application/json', Authorization: `Bearer ${token?.accessToken ?? ''}`, },
-                    params: {
-                        PageNumber: dataTable.value.pageNumber,
-                        PageSize: dataTable.value.pageSize
-                    },
-                })
-                if (data) {
-                    dataTableDelete.value = data.data
-                }
-            }, { watch: [() => dataTable.value.pageNumber, () => dataTable.value.pageSize, () => dataTable.value.totalRecords] },
+        const { data, pending, error, refresh } = await useAsyncData<Response<Pagination<Array<User>>>>(
+            'usersDeleted',
+            async () => await $fetch<Response<Pagination<Array<User>>>>(url, {
+                headers: { Accept: 'application/json', Authorization: `Bearer ${token?.accessToken ?? ''}`, },
+                params: {
+                    PageNumber: dataTable.value.pageNumber,
+                    PageSize: dataTable.value.pageSize
+                },
+            }), 
+            { watch: [() => dataDeletedTable.value.pageNumber, () => dataDeletedTable.value.pageSize, () => dataDeletedTable.value.totalRecords] },
         )
-
+        return { data, pending, error, refresh }
     } catch (error) {
         console.log(error);
     }
@@ -177,7 +168,7 @@ const deleteUserAsync = async (url: string) => {
         });
         if (!data.error) {
             successNotification(data.message, 'Delete User.')
-            dataTableDelete.value.totalRecords--;
+            dataDeletedTable.value.totalRecords--;
             dataTable.value.totalRecords--;
 
         }
@@ -235,6 +226,6 @@ const itemsDelete = (row: User) => [
 ]
 
 export {
-    createUserAsync, readUsersAsync, updateUserAsync, deleteUserAsync, readUserAsync, readUsersDeleteAsync,
-    dataTable, state, dataDetail, items, init_state, dataTableDelete, itemsDelete, validate
+    createUserAsync, readUsersAsync, updateUserAsync, deleteUserAsync, readUserAsync, readUsersDeletedAsync,
+    dataTable, state, dataDetail, items, init_state, dataDeletedTable, itemsDelete, validate
 }
