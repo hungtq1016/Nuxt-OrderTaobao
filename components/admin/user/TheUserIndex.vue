@@ -19,7 +19,8 @@ import ThePageHeader from '~/components/admin/include/ThePageHeader.vue';
 import { Column } from '~/type';
 import TheUserDeletedTable from '~/components/admin/user/TheUserDeletedTable.vue';
 import TheUserTable from '~/components/admin/user/TheUserTable.vue';
-
+import {  exportExcel } from '~/logic/pages/admin/user';
+const runtimeConfig = useRuntimeConfig()
 
 const columns: Array<Column> = [{
     key: 'id',
@@ -46,6 +47,7 @@ const columns: Array<Column> = [{
 },
 { key: 'actions', label: 'Actions' }
 ]
+
 const tabs = [{
     key: 'list',
     label: 'User List',
@@ -53,7 +55,9 @@ const tabs = [{
         title: 'User List',
         desc: "Display a list of users",
         slug: "/admin/user/add",
-        slug_title: "Add"
+        slug_title: "Add",
+        e_excel:`${runtimeConfig.public.apiBase}/users/export-user`,
+        i_excel:`${runtimeConfig.public.apiBase}/users/import-user`,
     }
 }, {
     key: 'delete',
@@ -64,4 +68,5 @@ const tabs = [{
         tooltip: "Only administrators have access to view the data."
     }
 }]
+
 </script>

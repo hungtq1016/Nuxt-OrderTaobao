@@ -186,7 +186,7 @@ const absoluteDelete = async (id: string) => {
     callBackNotification("Want to delete user?", () => deleteUserAsync(`${runtimeConfig.public.apiBase}/users/${id}/delete`))
 }
 
-const items = (row: User) => [
+const items = (row: User) :any=> [
     [
         {
             label: 'View',
@@ -224,6 +224,7 @@ const itemsDelete = (row: User) => [
             click: async () => await absoluteDelete(String(row.id)),
         }]
 ]
+
 
 export {
     createUserAsync, readUsersAsync, updateUserAsync, deleteUserAsync, readUserAsync, readUsersDeletedAsync,

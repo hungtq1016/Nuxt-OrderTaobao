@@ -2,17 +2,37 @@
   <UInput v-model="q" placeholder="Filter value" class="md:w-auto w-full" />
   <ul role="list"
     class="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-4 lg:grid-cols-4 xl:grid-cols-6 md:gap-x-6 xl:gap-x-4 mt-6">
-    <input type="file" accept="image/*" :multiple="true" @change="previewMultiImage" class="form-control-file"
-      id="my-file">
+    <li>
+      <label
+        class="group aspect-h-7 aspect-w-10 block w-full overflow-hidden rounded-lg border-dashed border-2 border-gray-300 hover:border-gray-400 ">
+        <span class="flex justify-center items-center flex-col space-x-2 p-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-600" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+          </svg>
+          <span class="font-medium text-gray-600">
+            Drop files to Attach, or
+            <span class="text-blue-600 underline">browse</span>
+          </span>
+        </span>
+        <input type="file" name="file_upload" class="hidden" accept="image/*" :multiple="true"
+          @change="previewMultiImage">
 
-    <template v-if="preview_list">
+      </label>
+
+    </li>
+    <template v-if="preview_list.length > 0">
       <li v-for="item, index in preview_list" :key="index" class="relative">
         <div
           class="group aspect-h-7 ring-2 ring-sky-500 aspect-w-10 block w-full overflow-hidden rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-lime-500 focus-within:ring-offset-2 focus-within:ring-offset-gray-100">
           <img :src="item" class="pointer-events-none object-cover group-hover:opacity-75" />
         </div>
-        <UButton :padded="false" color="sky" variant="soft" icon="i-heroicons-x-mark-20-solid"
-          class="absolute right-2 top-2" @click="remove(index)" />
+        <div class="absolute right-0 top-0 translate-x-1/2 -translate-y-1/2">
+          <UButton color="sky" variant="solid" icon="i-heroicons-arrow-path" size="2xs" :ui="{ rounded: 'rounded-full' }"
+            @click="remove(index)" />
+        </div>
+
 
         <p class="pointer-events-none mt-2 block truncate text-sm font-medium text-gray-900">{{ image_list[index].name
         }}</p>
@@ -34,6 +54,10 @@
       <p class="pointer-events-none block text-sm font-medium text-gray-500">{{ file.size }}</p>
     </li>
   </ul>
+  <UButton v-if="preview_list.length > 0"
+  class="fixed bottom-5 right-5 md:bottom-10 md:right-10" 
+  icon="i-heroicons-inbox-arrow-down" size="xl"
+    color="primary" square variant="solid" label="Save Change" />
 </template>
   
 <script setup lang="ts">
@@ -61,8 +85,6 @@ useHead({
 const remove = (id: number) => {
   image_list.value.splice(id, 1)
   preview_list.value.splice(id, 1)
-  console.log(image_list.value);
-
 }
 function formatBytes(bytes: number, decimals = 2): string {
   if (!+bytes) return '0 Bytes'
@@ -97,8 +119,6 @@ const previewMultiImage = (event: any) => {
       index++;
     }
   }
-  console.log(preview_list.value);
-
 }
 const q = ref('')
 
