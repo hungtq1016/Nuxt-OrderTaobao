@@ -19,7 +19,7 @@ import ThePageHeader from '~/components/admin/include/ThePageHeader.vue';
 import { Column } from '~/type';
 import TheUserDeletedTable from '~/components/admin/user/TheUserDeletedTable.vue';
 import TheUserTable from '~/components/admin/user/TheUserTable.vue';
-import {  exportExcel } from '~/logic/pages/admin/user';
+
 const runtimeConfig = useRuntimeConfig()
 
 const columns: Array<Column> = [{
@@ -56,8 +56,8 @@ const tabs = [{
         desc: "Display a list of users",
         slug: "/admin/user/add",
         slug_title: "Add",
-        e_excel:`${runtimeConfig.public.apiBase}/users/export-user`,
-        i_excel:`${runtimeConfig.public.apiBase}/users/import-user`,
+        e_excel:`${runtimeConfig.public.apiBase}/excel/export-user`,
+        i_excel:`${runtimeConfig.public.apiBase}/excel/import-user`,
     }
 }, {
     key: 'delete',

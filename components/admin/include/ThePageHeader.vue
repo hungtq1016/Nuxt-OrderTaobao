@@ -32,7 +32,7 @@ import { NuxtLink } from '#build/components';
       text-center text-sm font-semibold text-white shadow-sm hover:bg-emerald-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700">
               <UIcon name="i-heroicons-document-arrow-down" />
               Import Excel
-              <input type="file" @change="onFileChanged($event)" accept="excel/*" id="import-excel" class="hidden">
+              <input type="file" @change="onFileChanged($event)" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" id="import-excel" class="hidden">
 
             </div>
           </label>
@@ -52,7 +52,7 @@ import { NuxtLink } from '#build/components';
       text-center text-sm font-semibold text-white shadow-sm hover:bg-emerald-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700">
               <UIcon name="i-heroicons-arrow-path" />
               <span >Change</span>
-              <input type="file" @change="onFileChanged($event)" accept="excel/*" id="change-file" class="hidden">
+              <input type="file" @change="onFileChanged($event)" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" id="change-file" class="hidden">
 
             </div>
           </label>

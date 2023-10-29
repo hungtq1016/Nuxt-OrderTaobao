@@ -43,7 +43,12 @@ export type Role = {
 export type SendEmailRequest = {
     email: string
 }
-
+export type Image = BaseEntity & {
+    label: string,
+    url:string,
+    size: number,
+    type: string
+}
 export type User = {
     id?: string,
     firstName: string,
@@ -95,6 +100,15 @@ export type Pagination<T> = {
     nextPage :string,
     previousPage :string,
     data:T
+}
+
+export type BaseEntity = {
+    id : string,
+    createdAt : string,
+    createdBy : string,
+    updatedAt : string,
+    updatedBy : string,
+    enable : boolean
 }
 
 export type Navigation = {
