@@ -37,7 +37,7 @@
 <script setup lang="ts">
 const props = defineProps(['data', 'columns', 'pageSize', 'pageNumber', 'totalPages', 'totalRecords', 'items'])
 
-const emit = defineEmits(['update-page', 'update-size','delete-selected'])
+const emit = defineEmits(['update-page', 'update-size','delete-selected','restore-selected'])
 
 const page = ref<number>(props.pageNumber)
 
@@ -88,6 +88,16 @@ const itemsRow = [
       emit('delete-selected',selected.value.map((item:any) => item.id))
       selected.value = []
     },
-  }]
+  },
+  {
+    label: 'Restore Selected',
+    icon: 'i-heroicons-arrow-uturn-left',
+    shortcuts: ['D'],
+    click: () => {
+      emit('restore-selected',selected.value.map((item:any) => item.id))
+      selected.value = []
+    },
+  }
+  ]
 ]
 </script>

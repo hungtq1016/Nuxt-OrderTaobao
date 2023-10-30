@@ -1,50 +1,62 @@
+import { Permission, TokenResponse, User ,Response} from "~/type";
 import { storeToRefs } from "pinia";
-import { TokenResponse, Permission,User } from "~/type";
 
+const runtimeConfig = useRuntimeConfig();
+const indexedDb = useAuthInfo();
 
-const permissionAsync = async (): Promise<boolean> => {
-    const customer = '/authorize/permission';  
-    return ResolvePermission(customer,false);
-}
+export const usePermission = () => {
+    const userStore = useUserInfo();
 
-const ResolvePermission = async (role:string,admin:boolean):Promise<boolean> => {
-    const runtimeConfig = useRuntimeConfig();
-    const apiurl = runtimeConfig.public.apiBase;
-    
-    const indexedDb = useAuthInfo();
-    const token: TokenResponse | undefined = await indexedDb.readAuthAsync();
-    const userStore = useUserInfo()
-    const{user,isAuthen,adminPermission} = storeToRefs(userStore)  
-    if (token == undefined) {
-        return Promise.resolve(false);
-    }else{
-        try {  
-            const data = await $fetch<Permission<User>>(apiurl+role,{
-                method:"POST",
-                headers: 
-                    { 
-                        Authorization:`Bearer ${token?.accessToken ?? ''}`,
-                    },
-                body:token
-            })
-            
-            if (data.error) {
-                return Promise.resolve(false);
-            }else{
-                if (data?.data !== undefined) {
-                    user.value = data?.data
-                } 
-                if (data.isAuthen === true) {
-                    adminPermission.value = data.adminPermission
-                    isAuthen.value = true
-                    return Promise.resolve(true);
-                }  
-            }            
-            return Promise.resolve(false);
-        } catch (error) {
-            return Promise.resolve(false);
+    const isAuthen = async () => {
+        const { isEmpty } = storeToRefs(userStore)
+        if (isEmpty.value) {
+            await setToState()
         }
     }
-}
+    
+    const isViewAdminPage = async () => {
+        const { isEmpty } = storeToRefs(userStore)
+        if (isEmpty.value) {
+            await setToState()
+        }
+    }
 
-export {canAccess,permissionAsync}
+    const setToState = async (): Promise<void> => {
+        const result : Permission<User> | undefined = await userInfo();
+        const { user } = storeToRefs(userStore)
+
+        if (result == undefined) {
+            await navigateTo('/auth/login')
+        }else{
+            user.value = result
+        }
+     ;
+    }
+    
+    const userInfo = async (): Promise<Permission<User>|undefined> => {
+        const token: TokenResponse | undefined = await indexedDb.readAuthAsync();    
+        if (!token) {
+            await navigateTo('/auth/login')
+        }else{
+            const url:string = `${runtimeConfig.public.apiBase}/authorize/user-info`;
+            try {   
+                const { data,error } = await useFetch<Response<Permission<User>>>(url, {
+                    method: "POST",
+                    headers:
+                    {
+                        Authorization: `Bearer ${token?.accessToken ?? ''}`,
+                    },
+                    body: token
+                })
+                if (data.value) return Promise.resolve(data.value.data);
+                if (error.value) return Promise.resolve(undefined);
+            } catch (error) {
+                console.log(error);
+                return Promise.resolve(undefined);
+            }
+        }
+        
+    }
+    
+    return { userInfo, isViewAdminPage, isAuthen }
+}

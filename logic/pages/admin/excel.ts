@@ -1,13 +1,14 @@
 import {TokenResponse } from "~/type";
 
 const indexedDb = useAuthInfo();
-const token: TokenResponse | undefined = await indexedDb.readAuthAsync();
+
 
 const { errorNotification, successNotification } = useNotification()
 
 const file = ref();
 const contain = ref<boolean>(false)
 const exportExcel = async (url: string) => {
+    const token: TokenResponse | undefined = await indexedDb.readAuthAsync();
     try {
         const data = await $fetch<Blob>(url, {
             method: "GET",
@@ -32,6 +33,7 @@ const exportExcel = async (url: string) => {
 }
 
 const importExcel = async (url: string) => {
+    const token: TokenResponse | undefined = await indexedDb.readAuthAsync();
     const formData = new FormData();    
     formData.append('file', file.value);
     try {

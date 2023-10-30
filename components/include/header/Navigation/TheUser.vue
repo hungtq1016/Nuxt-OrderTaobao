@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-if="!isAuthen"
+        <div v-if="!user.isAuthen"
         class="hidden lg:flex lg:flex-1 lg:justify-end">
             <NuxtLink to="/auth/login" class="text-sm font-semibold leading-6 text-gray-900"><span>dang nhap</span>
             </NuxtLink>
@@ -28,8 +28,8 @@
                             Trang Cá Nhân
                         </NuxtLink>
                     </MenuItem>
-                    <MenuItem v-slot="{ active }">
-                        <NuxtLink v-if="adminPermission" to="/admin" :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">
+                    <MenuItem v-slot="{ active }" v-if="user.isAdmin">
+                        <NuxtLink to="#" :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">
                             Trang Quản Trị
                         </NuxtLink>
                     </MenuItem>
@@ -40,7 +40,7 @@
                     </MenuItem>
                     <MenuItem v-slot="{ active }">
                     <button @click="userStore.logOut"
-                        :class="[active ? 'bg-gray-100' : '', 'block w-full text-left px-4 py-2 text-sm text-gray-700']">Đăng Xuất</button>
+                        :class="[active ? 'bg-gray-100' : '', 'block w-full text-left px-4 py-2 text-sm text-gray-700']">Logout</button>
                     </MenuItem>
                 </MenuItems>
             </transition>
@@ -50,8 +50,6 @@
 
 <script setup lang="ts">
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
-import { storeToRefs } from 'pinia';
 const userStore = useUserInfo()
-const { isAuthen,adminPermission } = storeToRefs(userStore)
-
+const {user} = storeToRefs(userStore)
 </script>

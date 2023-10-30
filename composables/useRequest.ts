@@ -1,12 +1,15 @@
 import { Response, TokenResponse } from "~/type";
-const indexedDb = useAuthInfo();
-const token: TokenResponse | undefined = await indexedDb.readAuthAsync();
 
-const { errorNotification, successNotification } = useNotification()
 
-export const useRequest = () => {
+
+export const useRequest =  () => {
+
+    const indexedDb = useAuthInfo();
+    
 
     const GetRequest = async (url: string) => {
+        const token: TokenResponse | undefined = await indexedDb.readAuthAsync();
+        const { errorNotification, successNotification } = useNotification()
         try {
             const data = await $fetch<Response<any>>(url, {
                 method: "GET",
@@ -19,12 +22,16 @@ export const useRequest = () => {
             }
         } catch (error) {
             errorNotification('Operation failed');
+            throw error;
         }
 
         return false;
     };
 
     const PostRequest = async (url: string, body: any) => {
+        const token: TokenResponse | undefined = await indexedDb.readAuthAsync();
+        const { errorNotification, successNotification } = useNotification()
+
         try {
             const data = await $fetch<Response<any>>(url, {
                 method: "POST",
@@ -38,12 +45,16 @@ export const useRequest = () => {
             }
         } catch (error) {
             errorNotification('Operation failed');
+            throw error;
         }
 
         return false;
     };
 
     const PutRequest = async (url: string, body: any) => {
+        const token: TokenResponse | undefined = await indexedDb.readAuthAsync();
+        const { errorNotification, successNotification } = useNotification()
+
         try {
             const data = await $fetch<Response<any>>(url, {
                 method: "PUT",
@@ -57,12 +68,16 @@ export const useRequest = () => {
             }
         } catch (error) {
             errorNotification('Operation failed');
+            throw error;
         }
 
         return false;
     };
 
     const DeleteRequest = async (url: string, body: any) => {
+        const token: TokenResponse | undefined = await indexedDb.readAuthAsync();
+        const { errorNotification, successNotification } = useNotification()
+
         try {
             const data = await $fetch<Response<any>>(url, {
                 method: "DELETE",
@@ -76,6 +91,7 @@ export const useRequest = () => {
             }
         } catch (error) {
             errorNotification('Operation failed');
+            throw error;
         }
 
         return false;

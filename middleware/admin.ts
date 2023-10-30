@@ -1,12 +1,11 @@
 
-import { permissionAsync } from '~/composables/usePermission';
+import { useUserInfo } from '~/stores/user';
 export default defineNuxtRouteMiddleware(async(to, from)=> {
-    
-    await permissionAsync()
-    const {adminPermission} = useUserInfo()
+    const {user} = useUserInfo()
+    const {isViewAdminPage} = usePermission()
+    await isViewAdminPage()
 
-    if (!adminPermission) {        
+    if (!user.isAdmin) {
         return navigateTo('/auth/login')
     }
-    
 })

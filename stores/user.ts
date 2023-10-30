@@ -1,56 +1,41 @@
-import { TokenResponse, User } from "~/type"
+import { TokenResponse, User, Permission } from "~/type"
 
-const init_user : User = {
-    id: '',
-    firstName: '',
-    lastName: '',
-    userName: '',
-    email: '',
-    password:'',
-    phone:''
+const init_user: Permission<User> = {
+    data: {
+        id: '',
+        firstName: '',
+        lastName: '',
+        userName: '',
+        email: '',
+        password: '',
+        phone: ''
+    },
+    isAdmin: false,
+    isAuthen: false
 }
 
-export const useUserInfo = defineStore('userInfo',() => {
+export const useUserInfo = defineStore('userInfo', () => {
 
     const user = ref(init_user)
-    const isAuthen = ref<boolean>(false)
-    const adminPermission = ref<boolean>(false)
-    
+
+    const { PostRequest } = useRequest()
+
     const isEmpty: ComputedRef<boolean> = computed((): boolean => {
-        return isObjectEmpty(user.value)
+        return isObjectEmpty(user.value.data)
     });
 
-    const logOut = async ():Promise<void> => {
+    const logOut = async (): Promise<void> => {
         const runtimeConfig = useRuntimeConfig();
         const indexedDb = useAuthInfo();
-        const apiurl = runtimeConfig.public.apiBase;
-        const token: TokenResponse | undefined = await indexedDb.readAuthAsync();
-        isAuthen.value = false
-        adminPermission.value= false
-        const logout = '/authenticate/logout';  
-            
-        if (token == undefined) {
-            navigateTo('/auth/login');
-        }else{
-            try {  
-                await $fetch<void>(apiurl+logout,{
-                    method:"POST",
-                    headers: 
-                        { 
-                            Authorization:`Bearer ${token?.accessToken ?? ''}`,
-                        },
-                    body:token
-                })          
-                const success = await indexedDb.deleteAuthAsync();
-                if (success) {                    
-                    navigateTo('/auth/login')
-                }
-            } catch (error) {
-                console.log(error)
-            }
-        }
         
+        const token: TokenResponse | undefined = await indexedDb.readAuthAsync();
+        const url : string = `${runtimeConfig.public.apiBase}/authenticate/logout`;
+        user.value = init_user
+        if (await PostRequest(url,token)) {
+            await indexedDb.deleteAuthAsync();
+            await navigateTo('/auth/login')
+        }
     }
 
-    return {user,isEmpty,isAuthen,adminPermission,logOut}
+    return { user, isEmpty, logOut, init_user }
 })

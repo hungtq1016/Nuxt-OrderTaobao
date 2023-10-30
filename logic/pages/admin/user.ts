@@ -3,7 +3,6 @@ import type { FormError} from '@nuxt/ui/dist/runtime/types'
 import { useRequest } from "~/composables/useRequest";
 
 const indexedDb = useAuthInfo();
-const token: TokenResponse | undefined = await indexedDb.readAuthAsync();
 const runtimeConfig = useRuntimeConfig()
 const { callBackNotification } = useNotification()
 const { PostRequest,PutRequest,DeleteRequest } = useRequest()
@@ -48,6 +47,16 @@ const validate = (state: RegisterRequest): FormError[] => {
     return errors
 }
 
+const validateEdit = (state: RegisterRequest): FormError[] => {
+    const errors = []
+    if (!emailRegex.test(state.email)) errors.push({ path: 'email', message: 'Invalid email' })
+    if (!phoneRegex.test(state.phone)) errors.push({ path: 'phone', message: 'Invalid phone' })
+    if (!state.userName) errors.push({ path: 'username', message: 'Invalid user name' })
+    if (!state.firstName) errors.push({ path: 'firstname', message: 'Invalid first name' })
+    if (!state.lastName) errors.push({ path: 'lastname', message: 'Invalid last name' })
+    return errors
+}
+
 const dataDetail = ref<UserShow>({
     user: {
         id: "",
@@ -75,6 +84,8 @@ const createUserAsync = async (url: string, body: RegisterRequest) => {
 }
 
 const readUsersAsync = async (url: string) => {
+    const token: TokenResponse | undefined = await indexedDb.readAuthAsync();
+
     try {
         await useAsyncData(
             'dataTable',
@@ -86,6 +97,7 @@ const readUsersAsync = async (url: string) => {
                         PageSize: dataTable.value.pageSize
                     }
                 })
+                
                 if (data) {
                     dataTable.value = data.data
                 }
@@ -93,11 +105,13 @@ const readUsersAsync = async (url: string) => {
         )
 
     } catch (error) {
-        console.log(error);
+        throw error;
     }
 }
 
 const readDisableUsersAsync = async (url: string) => {
+    const token: TokenResponse | undefined = await indexedDb.readAuthAsync();
+
     try {
         await useAsyncData(
             'dataDisableTable',
@@ -116,11 +130,13 @@ const readDisableUsersAsync = async (url: string) => {
         )
 
     } catch (error) {
-        console.log(error);
+        throw error;
     }
 }
 
 const readUserAsync = async (url: string) => {
+    const token: TokenResponse | undefined = await indexedDb.readAuthAsync();
+
     try {
         await useAsyncData(
             'users',
@@ -151,12 +167,23 @@ const deleteUserAsync = async (url: string,body:any) => {
     }
 }
 
+const restoreUserAsync = async (url: string,body:any) =>{
+    if (await PutRequest(url,body)) {
+        dataDisableTable.value.totalRecords--;
+        dataTable.value.totalRecords++;
+    }
+}
+
 const deleteUser = async (id: string) => {
     callBackNotification("Want to delete user?", () => deleteUserAsync(`${runtimeConfig.public.apiBase}/users/single/delete/${id}`,null))
 }
 
 const eraseUser = async (id: string) => {
     callBackNotification("Want to delete user?", () => deleteUserAsync(`${runtimeConfig.public.apiBase}/users/single/erase/${id}`,null))
+}
+
+const restoreUser = async (id: string) => {
+    callBackNotification("Want to delete user?", () => restoreUserAsync(`${runtimeConfig.public.apiBase}/users/single/restore/${id}`,null))
 }
 
 const items = (row: User) :any=> [
@@ -188,7 +215,7 @@ const itemsDelete = (row: User) => [
         {
             label: 'Restore',
             icon: 'i-heroicons-pencil-square-20-solid',
-            click: async () => await navigateTo(`/admin/user/edit/${row.id}`),
+            click: async () => await restoreUser(String(row.id)),
             shortcuts: ['R'],
         }], [{
             label: 'Absolute Delete',
@@ -201,5 +228,5 @@ const itemsDelete = (row: User) => [
 
 export {
     createUserAsync, readUsersAsync, updateUserAsync, deleteUserAsync, readUserAsync, readDisableUsersAsync,
-    dataTable, state, dataDetail, items, init_state, dataDisableTable, itemsDelete, validate
+    dataTable, state, dataDetail, items, init_state, dataDisableTable, itemsDelete, validate,validateEdit,restoreUserAsync
 }

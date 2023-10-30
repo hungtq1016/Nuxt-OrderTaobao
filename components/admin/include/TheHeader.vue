@@ -30,7 +30,7 @@
                     alt="" />
                 <span class="hidden lg:flex lg:items-center">
                     <span class="ml-4 text-sm font-semibold leading-6 text-gray-900" aria-hidden="true">
-                        {{ `${user.firstName} ${user.lastName}` }}
+                        {{ `${user.data.firstName} ${user.data.lastName}` }}
                     </span>
                     <ChevronDownIcon class="ml-2 h-5 w-5 text-gray-400" aria-hidden="true" />
                 </span>
@@ -48,7 +48,7 @@
                     </MenuItem>
                     <MenuItem v-slot="{ active }">
                     <button @click="logOut"
-                        :class="[active ? 'bg-gray-100' : '', 'block w-full text-left px-4 py-2 text-sm text-gray-900']">Đăng Xuất</button>
+                        :class="[active ? 'bg-gray-100' : '', 'block w-full text-left px-4 py-2 text-sm text-gray-900']">Logout</button>
                     </MenuItem>
                 </MenuItems>
             </transition>

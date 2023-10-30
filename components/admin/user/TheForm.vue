@@ -1,6 +1,6 @@
 <template>
   <div class="flex justify-center">
-    <UForm :state="state" :validate="validate" @submit="submit"
+    <UForm :state="state" :validate="edit?validateEdit:validate" @submit="submit"
       class="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl w-full max-w-2xl">
       <div class="px-4 py-6 sm:p-8">
         <h2 class="text-base font-semibold leading-7 text-gray-900">User Form</h2>
@@ -81,7 +81,7 @@
 <script setup lang="ts">
 import { RegisterRequest } from '~/type';
 import type { FormSubmitEvent } from '@nuxt/ui/dist/runtime/types'
-import { createUserAsync,updateUserAsync,state,validate } from '~/logic/pages/admin/user';
+import { createUserAsync,updateUserAsync,state,validate,validateEdit } from '~/logic/pages/admin/user';
 
 const runtimeConfig = useRuntimeConfig()
 const { back } = useRouter()

@@ -4,7 +4,6 @@ const image_list = ref<Array<Blob>>([])
 const preview_list = ref<Array<string>>([])
 const indexedDb = useAuthInfo();
 const runtimeConfig = useRuntimeConfig();
-const token: TokenResponse | undefined = await indexedDb.readAuthAsync();
 const isOpen = ref(false)
 const { PostRequest,DeleteRequest } = useRequest()
 const { callBackNotification } = useNotification()
@@ -39,6 +38,8 @@ const state = ref<Pagination<Array<Image>>>(init_table)
 const selected = ref<Image>(init_state)
 const selectedNumber = ref<number>(0)
 const readImageAsync = async (url: string) => {
+    const token: TokenResponse | undefined = await indexedDb.readAuthAsync();
+
     try {
         await useAsyncData(
             'images',
