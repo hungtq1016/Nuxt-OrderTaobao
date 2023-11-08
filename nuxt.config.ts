@@ -17,8 +17,8 @@ export default defineNuxtConfig({
   },
   routeRules:{
     '/auth': { redirect: '/auth/login' },
-    '/admin/user/edit': { redirect: '/admin/user' },
-    '/admin/user/edit/': { redirect: '/admin/user' },
+    '/admin/users/edit': { redirect: '/admin/users' },
+    '/admin/users/edit/': { redirect: '/admin/users' },
     '/auth/**': { ssr: false ,prerender:true},
     '/admin/**': { ssr: false },
   },
@@ -66,7 +66,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     // Keys within public are also exposed client-side
     public: {
-      apiBase: 'https://localhost:7132/api'
+      apiBase: 'https://localhost:51836/api'
     }
   }
   

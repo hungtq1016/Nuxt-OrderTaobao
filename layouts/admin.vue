@@ -37,10 +37,10 @@ import TheHeader from '~/components/admin/include/TheHeader.vue';
 const navigations: Array<Navigation> = [
   { title: 'Trang Chủ', slug: '/admin', icon: HomeIcon, enable: true },
   {
-    title: 'Người Dùng', slug: '/admin/user', icon: UsersIcon, enable: false,
+    title: 'Người Dùng', slug: '/admin/users', icon: UsersIcon, enable: false,
     sub: [
-      { title: 'Danh Sách', slug: '/admin/user', icon: BookOpenIcon, enable: false },
-      { title: 'Thêm', slug: '/admin/user/add', icon: PlusIcon, enable: false }
+      { title: 'Danh Sách', slug: '/admin/users', icon: BookOpenIcon, enable: false },
+      { title: 'Thêm', slug: '/admin/users/add', icon: PlusIcon, enable: false }
     ]
   },
 

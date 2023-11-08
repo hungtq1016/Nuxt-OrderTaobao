@@ -1,10 +1,9 @@
 
 <template>
     <AppHeader/>
-    <div>
-      <div>Hello form default</div>
+    <main>
       <slot />
-    </div>
+    </main>
   </template>
   <script lang="ts"   setup>
 import AppHeader from '~/components/include/header/AppHeader.vue';

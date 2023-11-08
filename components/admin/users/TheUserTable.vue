@@ -3,14 +3,15 @@
         :items="items" 
         @update-page="(e: number) => dataTable.pageNumber = e"
         @update-size="(e: number) => dataTable.pageSize = e"
-        @delete-selected="(e: Array<string>) => deleteUserAsync(`${runtimeConfig.public.apiBase}/users/multiple/delete`, e)" />
+        @delete-selected="async(e: Array<string>) => await disableMultiple('users', {ids:e,user:user.data.id})" />
 </template>
     
 <script setup lang="ts">
 import TheTable from '~/components/admin/table/TheTable.vue';
 import { Column } from '~/type';
-import { items, readUsersAsync, dataTable, deleteUserAsync } from '~/logic/pages/admin/user';
-
+import { items, getPagedData, dataTable } from '~/logic/pages/admin/users';
+import { disableMultiple } from '~/logic/pages/RESTapi';
+const {user} = useUserInfo();
 const props = defineProps({
     columns: {
         type: Array<Column>,
@@ -18,8 +19,6 @@ const props = defineProps({
     }
 })
 
-const runtimeConfig = useRuntimeConfig()
-
-await readUsersAsync(`${runtimeConfig.public.apiBase}/users`)
+await getPagedData()
 
 </script>

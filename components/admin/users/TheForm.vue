@@ -81,18 +81,19 @@
 <script setup lang="ts">
 import { RegisterRequest } from '~/type';
 import type { FormSubmitEvent } from '@nuxt/ui/dist/runtime/types'
-import { createUserAsync,updateUserAsync,state,validate,validateEdit } from '~/logic/pages/admin/user';
+import { state,validate,validateEdit } from '~/logic/pages/admin/users';
+import { update,post } from '~/logic/pages/RESTapi';
 
-const runtimeConfig = useRuntimeConfig()
 const { back } = useRouter()
 const props = defineProps(['user', 'edit'])
 
 async function submit(event: FormSubmitEvent<RegisterRequest>) {
   if (props.edit) {
-    updateUserAsync(`${runtimeConfig.public.apiBase}/users/${event.data.id}`,event.data)
+    update('users',event.data.id,event.data)
   }else{
-    createUserAsync(`${runtimeConfig.public.apiBase}/users`,event.data)
+    post('users',event.data)
   }
   
 }
 </script>
+~/logic/pages/admin/users

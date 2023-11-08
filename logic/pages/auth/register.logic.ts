@@ -28,29 +28,31 @@ const RegisterLogic = () => {
 
     const RegisterAsync = async (req: RegisterRequest, url: string): Promise<void> => {
         const { updateAuthAsync } = useAuthInfo();   
-
         try {
-            const data = await $fetch<Response<TokenResponse>>(url, {
+            const { data, error } = await useFetch<Response<TokenResponse>>(url, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: req
-            });           
-            if (!data.error) {
+            });
+            if (data.value) {
                 const auth: TokenResponse = {
-                    refreshToken: data.data.refreshToken,
-                    accessToken: data.data.accessToken,
-                    tokenType :data.data.tokenType,
-                    expiredAt:data.data.expiredAt
+                    refreshToken: data.value.data.refreshToken,
+                    accessToken: data.value.data.accessToken,
+                    tokenType: data.value.data.tokenType,
+                    expiredAt: data.value.data.expiredAt
                 }
                 const saveResult: boolean | undefined = await updateAuthAsync(auth);
-                
+
                 if (saveResult) {
-                    successNotification(data.message,'Register.')
+                    successNotification(data.value.message, 'Register.')
                     await navigateTo('/');
                     return;
                 }
+            }
+            if (error.value) {
+                errorNotification('Cannot register.', error.value.data.message)
             }
         } catch (error) {
             errorNotification('Cannot register.')

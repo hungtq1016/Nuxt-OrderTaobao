@@ -13,7 +13,7 @@ export type LoginRequest = {
 }
 
 export type RegisterRequest = {
-    id?: string
+    id: string
     userName: string,
     password: string,
     repassword: string,
@@ -50,7 +50,7 @@ export type Image = BaseEntity & {
     type: string
 }
 export type User = {
-    id?: string,
+    id: string,
     firstName: string,
     lastName: string,
     userName: string,
@@ -111,7 +111,10 @@ export type BaseEntity = {
     updatedBy: string,
     enable: boolean
 }
-
+export type MultipleRequest = {
+    ids : Array<string> ,
+    user: string
+}
 export type Navigation = {
     title: string,
     slug: string,

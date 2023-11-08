@@ -3,8 +3,8 @@
 </template>
 
 <script setup lang="ts">
-import TheForm from '~/components/admin/user/TheForm.vue';
-import { readUserAsync,dataDetail,state } from '~/logic/pages/admin/user';
+import TheForm from '~/components/admin/users/TheForm.vue';
+import { getById,dataDetail,state } from '~/logic/pages/admin/users';
 const route = useRoute();
 
 definePageMeta({
@@ -17,9 +17,8 @@ useHead({
     { name: 'information', content: 'login' }
   ],
 })
-const runtimeConfig = useRuntimeConfig()
 
-await readUserAsync(runtimeConfig.public.apiBase+'/users/'+route.params.slug)
+await getById(String(route.params.slug))
 
 state.value = dataDetail.value.user 
 

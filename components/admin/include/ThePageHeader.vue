@@ -14,7 +14,7 @@ import { NuxtLink } from '#build/components';
     <div class="flex gap-2 items-center flex-wrap">
 
       <div v-if="e_excel" class="flex-auto sm:flex-none">
-        <button @click="exportExcel(e_excel)"
+        <button @click="expExcel(e_excel)"
           class="block rounded-md bg-green-600 px-3 py-1.5 sm:flex gap-x-1 items-center
       text-center text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600">
           <UIcon name="i-heroicons-document-arrow-up" />
@@ -39,7 +39,7 @@ import { NuxtLink } from '#build/components';
         </template>
         <template v-else>
           <div class="flex gap-px items-center">
-            <button @click="importExcel(i_excel)"
+            <button @click="impExcel(i_excel)"
               class="rounded-md bg-emerald-800 px-3 py-1.5 flex gap-x-1 items-center
       text-center text-sm font-semibold text-white shadow-sm hover:bg-emerald-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700">
               <UIcon name="i-heroicons-document-arrow-down" />
@@ -71,7 +71,7 @@ import { NuxtLink } from '#build/components';
 </template>
 
 <script setup lang="ts">
-import { exportExcel, importExcel, onFileChanged, contain, file } from '~/logic/pages/admin/excel';
+import { expExcel, impExcel, onFileChanged, contain, file } from '~/logic/pages/admin/excel';
 
 const props = defineProps({
   title: { type: String },

@@ -4,7 +4,7 @@
   
 <script setup lang="ts">
 
-import TheUserIndex from '~/components/admin/user/TheUserIndex.vue';
+import TheUserIndex from '~/components/admin/users/TheUserIndex.vue';
 
 definePageMeta({
   layout: "admin",

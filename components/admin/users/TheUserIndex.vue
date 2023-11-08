@@ -17,10 +17,9 @@
 <script setup lang="ts">
 import ThePageHeader from '~/components/admin/include/ThePageHeader.vue';
 import { Column } from '~/type';
-import TheUserDeletedTable from '~/components/admin/user/TheUserDeletedTable.vue';
-import TheUserTable from '~/components/admin/user/TheUserTable.vue';
+import TheUserDeletedTable from '~/components/admin/users/TheUserDeletedTable.vue';
+import TheUserTable from '~/components/admin/users/TheUserTable.vue';
 
-const runtimeConfig = useRuntimeConfig()
 
 const columns: Array<Column> = [{
     key: 'id',
@@ -54,10 +53,10 @@ const tabs = [{
     header: {
         title: 'User List',
         desc: "Display a list of users",
-        slug: "/admin/user/add",
+        slug: "/admin/users/add",
         slug_title: "Add",
-        e_excel:`${runtimeConfig.public.apiBase}/excel/export-user`,
-        i_excel:`${runtimeConfig.public.apiBase}/excel/import-user`,
+        e_excel:'users',
+        i_excel:'users',
     }
 }, {
     key: 'delete',

@@ -3,8 +3,8 @@
 </template>
   
 <script setup>
-import TheForm from '~/components/admin/user/TheForm.vue';
-import { init_state,state } from '~/logic/pages/admin/user';
+import TheForm from '~/components/admin/users/TheForm.vue';
+import { init_state,state } from '~/logic/pages/admin/users';
 definePageMeta({
   layout: "admin",
   middleware: ['admin']

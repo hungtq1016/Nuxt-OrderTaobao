@@ -10,11 +10,11 @@
 
 <script setup lang="ts">
 import ThePageHeader from '~/components/admin/include/ThePageHeader.vue';
-import TheAuthen from '~/components/admin/user/TheAuthen.vue';
-import TheDetail from '~/components/admin/user/TheDetail.vue';
-import TheRoles from '~/components/admin/user/TheRoles.vue';
+import TheAuthen from '~/components/admin/users/TheAuthen.vue';
+import TheDetail from '~/components/admin/users/TheDetail.vue';
+import TheRoles from '~/components/admin/users/TheRoles.vue';
 
-import { readUserAsync,dataDetail } from '~/logic/pages/admin/user';
+import { getById,dataDetail } from '~/logic/pages/admin/users';
 const route = useRoute();
 
 definePageMeta({
@@ -30,9 +30,8 @@ useHead({
 const header_props = {
   title: "Hồ Sơ",
   desc: "Thông tin được hiển thị mặc định",
-  slug: "/admin/user",
+  slug: "/admin/users",
   slug_title: "Danh Sách"
 }
-const runtimeConfig = useRuntimeConfig()
-readUserAsync(runtimeConfig.public.apiBase+'/users/'+route.params.slug)
+getById(String(route.params.slug))
 </script>

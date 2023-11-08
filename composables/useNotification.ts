@@ -12,11 +12,11 @@ export const useNotification = () => {
         })
     }
 
-    const errorNotification = (title:string) => {
+    const errorNotification = (title:string,message:string="Unfortunately, we are unable to fulfill your request at this time.") => {
         toast.add({
             id: title,
             title: title,
-            description: 'Unfortunately, we are unable to fulfill your request at this time.',
+            description: message,
             icon: 'i-heroicons-check-circle',
             color:'red',
             timeout: 2000

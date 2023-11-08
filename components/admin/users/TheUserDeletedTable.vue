@@ -3,15 +3,16 @@
         :items="itemsDelete"
         @update-page="(e: number) => dataDisableTable.pageNumber = e"
         @update-size="(e: number) => dataDisableTable.pageSize = e"
-        @delete-selected="(e: Array<string>) => deleteUserAsync(`${runtimeConfig.public.apiBase}/users/multiple/erase`, e)" 
-        @restore-selected="(e: Array<string>) => restoreUserAsync(`${runtimeConfig.public.apiBase}/users/multiple/restore`, e)" />
+        @delete-selected="async(e: Array<string>) => await eraseMuliple('users', {ids:e,user:user.data.id})" 
+        @restore-selected="async(e: Array<string>) => await restoreMultiple('users', {ids:e,user:user.data.id})" />
 </template>
 
 <script setup lang="ts">
 import TheTable from '~/components/admin/table/TheTable.vue';
 import { Column } from '~/type';
-import { readDisableUsersAsync, dataDisableTable, itemsDelete, deleteUserAsync,restoreUserAsync } from '~/logic/pages/admin/user';
-
+import { getDisablePagedData, dataDisableTable, itemsDelete} from '~/logic/pages/admin/users';
+import { eraseMuliple,restoreMultiple } from '~/logic/pages/RESTapi';
+const {user} = useUserInfo();
 const props = defineProps({
     columns: {
         type: Array<Column>,
@@ -21,6 +22,6 @@ const props = defineProps({
 
 const runtimeConfig = useRuntimeConfig()
 
-await readDisableUsersAsync(`${runtimeConfig.public.apiBase}/users/disable`)
+await getDisablePagedData()
 
 </script>

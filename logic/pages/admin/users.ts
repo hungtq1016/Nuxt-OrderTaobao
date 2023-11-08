@@ -1,13 +1,11 @@
 import { Pagination, RegisterRequest, Response, TokenResponse, User, UserShow } from "~/type";
 import type { FormError} from '@nuxt/ui/dist/runtime/types'
-import { useRequest } from "~/composables/useRequest";
+import {restore,disable,erase,get} from '~/logic/pages/RESTapi';
 
-const indexedDb = useAuthInfo();
-const runtimeConfig = useRuntimeConfig()
 const { callBackNotification } = useNotification()
-const { PostRequest,PutRequest,DeleteRequest } = useRequest()
 
 const init_state : User = {
+    id:"",
     email: "",
     firstName: "",
     lastName: "",
@@ -77,30 +75,18 @@ const dataDetail = ref<UserShow>({
     roles: []
 })
 
-const createUserAsync = async (url: string, body: RegisterRequest) => {
-    if (await PostRequest(url,body)) {
-        await navigateTo('/admin/user');
-    }
-}
-
-const readUsersAsync = async (url: string) => {
-    const token: TokenResponse | undefined = await indexedDb.readAuthAsync();
-
+const getPagedData = async () => {
     try {
         await useAsyncData(
             'dataTable',
             async () => {
-                const data = await $fetch<Response<Pagination<Array<User>>>>(url, {
-                    headers: { Accept: 'application/json', Authorization: `Bearer ${token?.accessToken ?? ''}`, },
-                    params: {
-                        PageNumber: dataTable.value.pageNumber,
-                        PageSize: dataTable.value.pageSize
-                    }
-                })
-                
+                const data = await get<Pagination<Array<User>>>('users','page')
                 if (data) {
-                    dataTable.value = data.data
+                    dataTable.value = data;
+                    dataTable.value.totalRecords--;
+                    dataDisableTable.value.totalRecords--;
                 }
+                return data
             }, { watch: [() => dataTable.value.pageNumber, () => dataTable.value.pageSize, () => dataTable.value.totalRecords] },
         )
 
@@ -109,23 +95,18 @@ const readUsersAsync = async (url: string) => {
     }
 }
 
-const readDisableUsersAsync = async (url: string) => {
-    const token: TokenResponse | undefined = await indexedDb.readAuthAsync();
-
+const getDisablePagedData = async () => {
     try {
         await useAsyncData(
             'dataDisableTable',
             async () => {
-                const data = await $fetch<Response<Pagination<Array<User>>>>(url, {
-                    headers: { Accept: 'application/json', Authorization: `Bearer ${token?.accessToken ?? ''}`, },
-                    params: {
-                        PageNumber: dataDisableTable.value.pageNumber,
-                        PageSize: dataDisableTable.value.pageSize
-                    }
-                })
+                const data = await get<Pagination<Array<User>>>('users','page-disable')
                 if (data) {
-                    dataDisableTable.value = data.data
+                    dataDisableTable.value = data;
+                    dataTable.value.totalRecords--;
+                    dataDisableTable.value.totalRecords--;
                 }
+                
             }, { watch: [() => dataDisableTable.value.pageNumber, () => dataDisableTable.value.pageSize, () => dataDisableTable.value.totalRecords] },
         )
 
@@ -134,56 +115,32 @@ const readDisableUsersAsync = async (url: string) => {
     }
 }
 
-const readUserAsync = async (url: string) => {
-    const token: TokenResponse | undefined = await indexedDb.readAuthAsync();
-
+const getById = async (id:string) => {
     try {
         await useAsyncData(
             'users',
             async () => {
-                const data = await $fetch<Response<UserShow>>(url, {
-                    headers: { Accept: 'application/json', Authorization: `Bearer ${token?.accessToken ?? ''}`, },
-                })
+                const data = await get<UserShow>('users',id)
                 if (data) {
-                    dataDetail.value = data.data
+                    dataDetail.value = data
                 }
             }
         )
     } catch (error) {
-        console.log(error);
+        throw error;
     }
 }
 
-const updateUserAsync = async (url: string, body: RegisterRequest) => {
-    if (await PutRequest(url,body)) {
-        await navigateTo('/admin/user');
-    }
-}
-
-const deleteUserAsync = async (url: string,body:any) => {
-    if (await DeleteRequest(url,body)) {
-        dataDisableTable.value.totalRecords--;
-        dataTable.value.totalRecords--;
-    }
-}
-
-const restoreUserAsync = async (url: string,body:any) =>{
-    if (await PutRequest(url,body)) {
-        dataDisableTable.value.totalRecords--;
-        dataTable.value.totalRecords++;
-    }
-}
-
-const deleteUser = async (id: string) => {
-    callBackNotification("Want to delete user?", () => deleteUserAsync(`${runtimeConfig.public.apiBase}/users/single/delete/${id}`,null))
+const disableUser = async (id: string) => {
+    callBackNotification("Want to disable user?", () => disable('users',id))
 }
 
 const eraseUser = async (id: string) => {
-    callBackNotification("Want to delete user?", () => deleteUserAsync(`${runtimeConfig.public.apiBase}/users/single/erase/${id}`,null))
+    callBackNotification("Want to erase user?", () => erase('users',id))
 }
 
 const restoreUser = async (id: string) => {
-    callBackNotification("Want to delete user?", () => restoreUserAsync(`${runtimeConfig.public.apiBase}/users/single/restore/${id}`,null))
+    callBackNotification("Want to restore user?", () => restore('users',id))
 }
 
 const items = (row: User) :any=> [
@@ -191,12 +148,12 @@ const items = (row: User) :any=> [
         {
             label: 'View',
             icon: 'i-heroicons-eye-20-solid',
-            click: async () => await navigateTo(`/admin/user/${row.id}`),
+            click: async () => await navigateTo(`/admin/users/${row.id}`),
             shortcuts: ['V'],
         }, {
             label: 'Edit',
             icon: 'i-heroicons-pencil-square-20-solid',
-            click: async () => await navigateTo(`/admin/user/edit/${row.id}`),
+            click: async () => await navigateTo(`/admin/users/edit/${row.id}`),
             shortcuts: ['E'],
         }, {
             label: 'Clone',
@@ -206,7 +163,7 @@ const items = (row: User) :any=> [
             label: 'Delete',
             icon: 'i-heroicons-trash-20-solid',
             shortcuts: ['D'],
-            click: async () => await deleteUser(String(row.id)),
+            click: async () => await disableUser(String(row.id)),
         }]
 ]
 
@@ -225,8 +182,7 @@ const itemsDelete = (row: User) => [
         }]
 ]
 
-
 export {
-    createUserAsync, readUsersAsync, updateUserAsync, deleteUserAsync, readUserAsync, readDisableUsersAsync,
-    dataTable, state, dataDetail, items, init_state, dataDisableTable, itemsDelete, validate,validateEdit,restoreUserAsync
+    getPagedData, getDisablePagedData, getById,items,itemsDelete, validate,validateEdit,
+    dataTable, state, dataDetail, init_state, dataDisableTable, 
 }
