@@ -26,4 +26,4 @@ const onFileChanged = ($event: Event) => {
     }
 }
 
-export { expExcel,impExcel,onFileChanged,contain,file}
+export { expExcel,impExcel,onFileChanged,contain,file }

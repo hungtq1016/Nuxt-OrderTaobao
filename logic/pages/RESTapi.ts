@@ -1,4 +1,4 @@
-import { MultipleRequest } from "~/type";
+import { MultipleRequest, TokenResponse } from "~/type";
 
 const runtimeConfig = useRuntimeConfig()
 const { PostRequest, PutRequest, DeleteRequest, GetRequest } = useRequest()
@@ -94,19 +94,29 @@ async function importExcel<T>(path: string, body: T) {
 }
 
 async function exportExcel(path: string) {
-
+    const indexedDb = useAuthInfo();
+    const token: TokenResponse | undefined = await indexedDb.readAuthAsync();
     const url: string = `${runtimeConfig.public.apiBase}/${path}/excel`;
-    const result = await GetRequest<Blob>(url);
-    if (result !== undefined) {
-        const blob = new Blob([result], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
 
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `users.xlsx`;
-        a.click();
-        window.URL.revokeObjectURL(url);
+    try {
+        const {data,error} = await useFetch<Blob>(url, {
+            method: "GET",
+            headers: { Accept: 'application/json', Authorization: `Bearer ${token?.accessToken ?? ''}` },
+        });
+        if (data.value !== null) {
+            const blob = new Blob([data.value], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `users.xlsx`;
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+        
+    } catch (error) {
+        throw error;
     }
+    
 }
 
 export { get, post, update, disable, restore, erase, disableMultiple, restoreMultiple, eraseMuliple, importExcel, exportExcel }

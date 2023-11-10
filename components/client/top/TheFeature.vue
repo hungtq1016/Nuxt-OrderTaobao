@@ -21,7 +21,7 @@
                     </div>
                     <div>
                         <div class="relative flex h-full flex-col items-center justify-center gap-6 p-8 py-16 lg:py-8">
-                            <img class="w-16" src="./images/xp.webp" alt="xp icon illustration" width="512" height="512"
+                            <img class="w-16" src="#" alt="xp icon illustration" width="512" height="512"
                                 loading="lazy">
                             <div class="mx-auto text-center sm:w-2/5">
                                 <h2 class="text-xl font-semibold text-gray-900 dark:text-white">User centred</h2>

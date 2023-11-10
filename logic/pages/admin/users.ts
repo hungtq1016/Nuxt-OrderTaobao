@@ -77,19 +77,14 @@ const dataDetail = ref<UserShow>({
 
 const getPagedData = async () => {
     try {
-        await useAsyncData(
+        const {data} = await useAsyncData(
             'dataTable',
-            async () => {
-                const data = await get<Pagination<Array<User>>>('users','page')
-                if (data) {
-                    dataTable.value = data;
-                    dataTable.value.totalRecords--;
-                    dataDisableTable.value.totalRecords--;
-                }
-                return data
-            }, { watch: [() => dataTable.value.pageNumber, () => dataTable.value.pageSize, () => dataTable.value.totalRecords] },
+            async () => await get<Pagination<Array<User>>>('users','page'), 
+            { watch: [() => dataTable.value.pageNumber, () => dataTable.value.pageSize, () => dataTable.value.totalRecords] },
         )
-
+        if (data.value?.data) {
+            dataTable.value = data.value
+        }
     } catch (error) {
         throw error;
     }
@@ -97,18 +92,14 @@ const getPagedData = async () => {
 
 const getDisablePagedData = async () => {
     try {
-        await useAsyncData(
+        const {data} = await useAsyncData(
             'dataDisableTable',
-            async () => {
-                const data = await get<Pagination<Array<User>>>('users','page-disable')
-                if (data) {
-                    dataDisableTable.value = data;
-                    dataTable.value.totalRecords--;
-                    dataDisableTable.value.totalRecords--;
-                }
-                
-            }, { watch: [() => dataDisableTable.value.pageNumber, () => dataDisableTable.value.pageSize, () => dataDisableTable.value.totalRecords] },
+            async () =>await get<Pagination<Array<User>>>('users','page-disable'), 
+            { watch: [() => dataDisableTable.value.pageNumber, () => dataDisableTable.value.pageSize, () => dataDisableTable.value.totalRecords] },
         )
+        if (data.value?.data) {
+            dataDisableTable.value = data.value
+        }
 
     } catch (error) {
         throw error;
@@ -132,15 +123,15 @@ const getById = async (id:string) => {
 }
 
 const disableUser = async (id: string) => {
-    callBackNotification("Want to disable user?", () => disable('users',id))
+    callBackNotification("Want to disable user?", async() => await disable('users',id))
 }
 
 const eraseUser = async (id: string) => {
-    callBackNotification("Want to erase user?", () => erase('users',id))
+    callBackNotification("Want to erase user?", async() => await erase('users',id))
 }
 
 const restoreUser = async (id: string) => {
-    callBackNotification("Want to restore user?", () => restore('users',id))
+    callBackNotification("Want to restore user?", async() => await restore('users',id))
 }
 
 const items = (row: User) :any=> [

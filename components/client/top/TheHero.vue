@@ -33,9 +33,9 @@
             </div>
             <div class="relative mt-20 md:mt-0 md:w-2/5 lg:w-3/5">
               <div class="-ml-6 md:-mr-72 lg:mr-0">
-                <img class="h-full object-cover object-left dark:hidden" src="./images/hero.webp" alt="app screenshot"
+                <img class="h-full object-cover object-left dark:hidden" src="#" alt="app screenshot"
                   width="1628" height="1233">
-                <img class="hidden h-full object-cover object-left dark:block" src="./images/hero-dark.webp"
+                <img class="hidden h-full object-cover object-left dark:block" src="#"
                   alt="app screenshot" width="1628" height="1233">
               </div>
             </div>
@@ -46,15 +46,15 @@
               TECHS COMPANIES</span>
             <div
               class="mt-8 flex flex-wrap items-center justify-center gap-6 brightness-75 contrast-200 grayscale dark:brightness-200 dark:contrast-0 sm:justify-between lg:gap-24">
-              <img class="h-8 w-auto lg:h-14" src="images/clients/airbnb.svg" loading="lazy" alt="airbnb" width="100"
+              <img class="h-8 w-auto lg:h-14" src="#" loading="lazy" alt="airbnb" width="100"
                 height="">
-              <img class="h-6 w-auto lg:h-10" src="images/clients/google.svg" loading="lazy" alt="bissell" width="100"
+              <img class="h-6 w-auto lg:h-10" src="#" loading="lazy" alt="bissell" width="100"
                 height="">
-              <img class="h-6 w-auto lg:h-10" src="images/clients/ge.svg" loading="lazy" alt="ge" width="100"
+              <img class="h-6 w-auto lg:h-10" src="#" loading="lazy" alt="ge" width="100"
                 height="100">
-              <img class="h-6 w-auto lg:h-10" src="images/clients/netflix.svg" loading="lazy" alt="lilly" width="100"
+              <img class="h-6 w-auto lg:h-10" src="#" loading="lazy" alt="lilly" width="100"
                 height="100">
-              <img class="h-8 w-auto lg:h-14" src="images/clients/microsoft.svg" loading="lazy" alt="microsoft"
+              <img class="h-8 w-auto lg:h-14" src="#" loading="lazy" alt="microsoft"
                 width="100" height="">
             </div>
           </div>

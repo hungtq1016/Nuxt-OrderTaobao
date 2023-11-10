@@ -4,17 +4,16 @@
             <div class="grid grid-cols-1 2xl:grid-cols-5 gap-5 xl:gap-7 mb-12 md:mb-14 xl:mb-16">
                 <div class="grid grid-cols-1 gap-3 ltr:2xl:-mr-14 rtl:2xl:-ml-14">
                     <NuxtLink to="#" class="flex justify-between items-center bg-gray-200 rounded-md px-5 2xl:px-3.5 py-3 xl:py-3.5 2xl:py-2.5 3xl:py-3.5 transition hover:bg-gray-100"
-                        href="/category/woman">
+                    >
                         <div class="flex items-center">
                             <div class="inline-flex flex-shrink-0 2xl:w-12 2xl:h-12 3xl:w-auto 3xl:h-auto"><span
                                     style="box-sizing: border-box; display: inline-block; overflow: hidden; width: initial; height: initial; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px; position: relative; max-width: 100%;"><span
                                         style="box-sizing: border-box; display: block; width: initial; height: initial; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px; max-width: 100%;"><img
                                             alt="" aria-hidden="true"
-                                            src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%2760%27%20height=%2760%27/%3e"
+                                            src="#"
                                             style="display: block; max-width: 100%; width: initial; height: initial; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px;"></span><img
                                         alt="Woman"
-                                        srcset="/_next/image?url=%2Fassets%2Fimages%2Fcategory%2Fwoman.jpg&amp;w=64&amp;q=75 1x, /_next/image?url=%2Fassets%2Fimages%2Fcategory%2Fwoman.jpg&amp;w=128&amp;q=75 2x"
-                                        src="/_next/image?url=%2Fassets%2Fimages%2Fcategory%2Fwoman.jpg&amp;w=128&amp;q=75"
+                                        src="#"
                                         decoding="async" data-nimg="intrinsic" class="bg-gray-300 object-cover rounded-full"
                                         style="position: absolute; inset: 0px; box-sizing: border-box; padding: 0px; border: none; margin: auto; display: block; width: 0px; height: 0px; min-width: 100%; max-width: 100%; min-height: 100%; max-height: 100%;"></span>
                             </div>
