@@ -66,7 +66,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     // Keys within public are also exposed client-side
     public: {
-      apiBase: 'https://localhost:51836/api'
+      apiBase: 'https://localhost:8001/api'
     }
   }
   

@@ -11,6 +11,7 @@ import TheTable from '~/components/admin/table/TheTable.vue';
 import { Column } from '~/type';
 import { items, getPagedData, dataTable } from '~/logic/pages/admin/users';
 import { disableMultiple } from '~/logic/pages/RESTapi';
+import { Enable } from '~/enum';
 const {user} = useUserInfo();
 const props = defineProps({
     columns: {
@@ -19,6 +20,6 @@ const props = defineProps({
     }
 })
 
-await getPagedData()
+await getPagedData(Enable.Enable,dataTable);
 
 </script>

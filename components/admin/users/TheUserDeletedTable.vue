@@ -10,8 +10,9 @@
 <script setup lang="ts">
 import TheTable from '~/components/admin/table/TheTable.vue';
 import { Column } from '~/type';
-import { getDisablePagedData, dataDisableTable, itemsDelete} from '~/logic/pages/admin/users';
+import { getPagedData, dataDisableTable, itemsDelete} from '~/logic/pages/admin/users';
 import { eraseMuliple,restoreMultiple } from '~/logic/pages/RESTapi';
+import { Enable } from '~/enum';
 const {user} = useUserInfo();
 const props = defineProps({
     columns: {
@@ -22,6 +23,6 @@ const props = defineProps({
 
 const runtimeConfig = useRuntimeConfig()
 
-await getDisablePagedData()
+await getPagedData(Enable.Disable,dataDisableTable)
 
 </script>

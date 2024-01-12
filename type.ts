@@ -1,4 +1,5 @@
 import { FunctionalComponent } from "vue"
+import { Enable } from "./enum"
 
 export type TokenResponse = {
     accessToken: string,
@@ -17,7 +18,7 @@ export type RegisterRequest = {
     userName: string,
     password: string,
     repassword: string,
-    phone: string,
+    phoneNumber: string,
     email: string,
     firstName: string,
     lastName: string
@@ -56,7 +57,7 @@ export type User = {
     userName: string,
     password: string,
     email: string,
-    phone: string,
+    phoneNumber: string,
 }
 
 export type UserDetail = User & {
@@ -101,6 +102,12 @@ export type Pagination<T> = {
     nextPage: string,
     previousPage: string,
     data: T
+}
+
+export type PageRequest = {
+    pageNumber: number,
+    pageSize: number,
+    status : Enable
 }
 
 export type BaseEntity = {

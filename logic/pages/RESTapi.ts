@@ -3,9 +3,9 @@ import { MultipleRequest, TokenResponse } from "~/type";
 const runtimeConfig = useRuntimeConfig()
 const { PostRequest, PutRequest, DeleteRequest, GetRequest } = useRequest()
 
-async function get<T>(path: string, action: string) {
+async function get<T>(path: string) {
 
-    const url: string = `${runtimeConfig.public.apiBase}/${path}/${action}`;
+    const url: string = `${runtimeConfig.public.apiBase}/${path}`;
     const result = await GetRequest<T>(url);
     if (result) {
         return result

@@ -1,6 +1,7 @@
-import { Pagination, RegisterRequest, Response, TokenResponse, User, UserShow } from "~/type";
+import { PageRequest, Pagination, RegisterRequest, Response, TokenResponse, User, UserShow } from "~/type";
 import type { FormError} from '@nuxt/ui/dist/runtime/types'
 import {restore,disable,erase,get} from '~/logic/pages/RESTapi';
+import { Enable } from "~/enum";
 
 const { callBackNotification } = useNotification()
 
@@ -10,7 +11,7 @@ const init_state : User = {
     firstName: "",
     lastName: "",
     password: "",
-    phone: "",
+    phoneNumber: "",
     userName: "",
 }
 
@@ -38,7 +39,7 @@ const validate = (state: RegisterRequest): FormError[] => {
     const errors = []
     if (!passwordRegex.test(state.password)) errors.push({ path: 'password', message: 'Invalid password' })
     if (!emailRegex.test(state.email)) errors.push({ path: 'email', message: 'Invalid email' })
-    if (!phoneRegex.test(state.phone)) errors.push({ path: 'phone', message: 'Invalid phone' })
+    if (!phoneRegex.test(state.phoneNumber)) errors.push({ path: 'phone', message: 'Invalid phone' })
     if (!state.userName) errors.push({ path: 'username', message: 'Invalid user name' })
     if (!state.firstName) errors.push({ path: 'firstname', message: 'Invalid first name' })
     if (!state.lastName) errors.push({ path: 'lastname', message: 'Invalid last name' })
@@ -48,7 +49,7 @@ const validate = (state: RegisterRequest): FormError[] => {
 const validateEdit = (state: RegisterRequest): FormError[] => {
     const errors = []
     if (!emailRegex.test(state.email)) errors.push({ path: 'email', message: 'Invalid email' })
-    if (!phoneRegex.test(state.phone)) errors.push({ path: 'phone', message: 'Invalid phone' })
+    if (!phoneRegex.test(state.phoneNumber)) errors.push({ path: 'phone', message: 'Invalid phone' })
     if (!state.userName) errors.push({ path: 'username', message: 'Invalid user name' })
     if (!state.firstName) errors.push({ path: 'firstname', message: 'Invalid first name' })
     if (!state.lastName) errors.push({ path: 'lastname', message: 'Invalid last name' })
@@ -60,7 +61,7 @@ const dataDetail = ref<UserShow>({
         id: "",
         email: '',
         userName: "",
-        phone: "",
+        phoneNumber: "",
         firstName: "",
         lastName: "",
         enable: true,
@@ -75,43 +76,34 @@ const dataDetail = ref<UserShow>({
     roles: []
 })
 
-const getPagedData = async () => {
+const getPagedData = async (enable:Enable,table: Ref<Pagination<Array<User>>>) => {
+    const queryObject:PageRequest = {
+        pageNumber:table.value.pageNumber,
+        pageSize:table.value.pageSize,
+        status:enable
+    }
+    const queryString = "users" + objectToQuery(queryObject);
     try {
         const {data} = await useAsyncData(
-            'dataTable',
-            async () => await get<Pagination<Array<User>>>('users','page'), 
-            { watch: [() => dataTable.value.pageNumber, () => dataTable.value.pageSize, () => dataTable.value.totalRecords] },
+            enable == 1 ? "dataTable" : "dataDisableTable",
+            async () => await get<Pagination<Array<User>>>(queryString), 
+            { watch: [() => table.value.pageNumber, () => table.value.pageSize, () => table.value.totalRecords] },
         )
         if (data.value?.data) {
-            dataTable.value = data.value
+            table.value = data.value
         }
     } catch (error) {
         throw error;
     }
 }
 
-const getDisablePagedData = async () => {
-    try {
-        const {data} = await useAsyncData(
-            'dataDisableTable',
-            async () =>await get<Pagination<Array<User>>>('users','page-disable'), 
-            { watch: [() => dataDisableTable.value.pageNumber, () => dataDisableTable.value.pageSize, () => dataDisableTable.value.totalRecords] },
-        )
-        if (data.value?.data) {
-            dataDisableTable.value = data.value
-        }
-
-    } catch (error) {
-        throw error;
-    }
-}
 
 const getById = async (id:string) => {
     try {
         await useAsyncData(
             'users',
             async () => {
-                const data = await get<UserShow>('users',id)
+                const data = await get<UserShow>('users/'+id)
                 if (data) {
                     dataDetail.value = data
                 }
@@ -174,6 +166,6 @@ const itemsDelete = (row: User) => [
 ]
 
 export {
-    getPagedData, getDisablePagedData, getById,items,itemsDelete, validate,validateEdit,
+    getPagedData,getById,items,itemsDelete,validate,validateEdit,
     dataTable, state, dataDetail, init_state, dataDisableTable, 
 }
