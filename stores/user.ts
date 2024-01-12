@@ -8,7 +8,7 @@ const init_user: Permission<User> = {
         userName: '',
         email: '',
         password: '',
-        phone: ''
+        phoneNumber: ''
     },
     isAdmin: false,
     isAuthen: false

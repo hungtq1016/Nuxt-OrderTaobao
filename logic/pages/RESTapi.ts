@@ -21,7 +21,7 @@ async function post<T>(path: string, body: T) {
     }
 }
 
-async function update<T>(path: string,id:string, body: T) {
+async function update<T>(path: string,id:string|number, body: T) {
     const { user } = useUserInfo();
 
     const url: string = `${runtimeConfig.public.apiBase}/${path}/${id}/${user.data.id}`;

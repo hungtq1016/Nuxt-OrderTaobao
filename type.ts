@@ -38,18 +38,37 @@ export type ValidateResponse = {
 
 export type Role = {
     id: string,
-    name: string
+    name: string,
+    normalizedName:string,
+    concurrencyStamp:string
+}
+
+export type RoleDetail = Role & {
+    claims: Array<ClaimResponse>
+}
+
+export type ClaimResponse = {
+    type:string,
+    value:string
+}
+export type ClaimRequest = {
+    id:number,
+    roleId:string
+    claimType:string,
+    claimValue:string
 }
 
 export type SendEmailRequest = {
     email: string
 }
+
 export type Image = BaseEntity & {
     label: string,
     url: string,
     size: number,
     type: string
 }
+
 export type User = {
     id: string,
     firstName: string,

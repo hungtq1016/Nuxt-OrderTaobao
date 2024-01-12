@@ -27,7 +27,7 @@
   
 <script setup lang="ts">
 import { ref } from 'vue'
-import { CalendarIcon, ChartPieIcon, DocumentDuplicateIcon, FolderIcon, HomeIcon, UsersIcon,Bars3Icon } from '@heroicons/vue/24/outline'
+import { CalendarIcon, ChartPieIcon, DocumentDuplicateIcon, FolderIcon, HomeIcon, UsersIcon, Bars3Icon ,TagIcon} from '@heroicons/vue/24/outline'
 import Navigator from '~/components/include/header/Admin/Navigator.vue';
 import NavigatorMobile from '~/components/include/header/Admin/NavigatorMobile.vue';
 import { Navigation } from '~/type';
@@ -35,17 +35,23 @@ import { BookOpenIcon, ListBulletIcon, PhotoIcon, PlusIcon } from '@heroicons/vu
 import TheHeader from '~/components/admin/include/TheHeader.vue';
 
 const navigations: Array<Navigation> = [
-  { title: 'Trang Chủ', slug: '/admin', icon: HomeIcon, enable: true },
+  { title: 'Dashboard', slug: '/admin', icon: HomeIcon, enable: true },
   {
-    title: 'Người Dùng', slug: '/admin/users', icon: UsersIcon, enable: false,
+    title: 'Users', slug: '/admin/users', icon: UsersIcon, enable: false,
     sub: [
       { title: 'Danh Sách', slug: '/admin/users', icon: BookOpenIcon, enable: false },
       { title: 'Thêm', slug: '/admin/users/add', icon: PlusIcon, enable: false }
     ]
   },
-
-  { title: 'Thể Loại', slug: '/admin/category', icon: ListBulletIcon, enable: false },
-  { title: 'Images', slug: '/admin/image', icon: PhotoIcon, enable: false },
+  {
+    title: 'Roles', slug: '/admin/roles', icon: TagIcon, enable: false,
+    sub: [
+      { title: 'Danh Sách', slug: '/admin/roles', icon: BookOpenIcon, enable: false },
+      { title: 'Thêm', slug: '/admin/roles/add', icon: PlusIcon, enable: false }
+    ]
+  },
+  { title: 'Categories', slug: '/admin/categories', icon: ListBulletIcon, enable: false },
+  { title: 'Images', slug: '/admin/images', icon: PhotoIcon, enable: false },
   { title: 'Projects', slug: '#', icon: FolderIcon, enable: false },
   { title: 'Calendar', slug: '#', icon: CalendarIcon, enable: false },
   { title: 'Documents', slug: '#', icon: DocumentDuplicateIcon, enable: false },
